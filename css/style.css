@@ -1,0 +1,215 @@
+:root {
+	--black: #1C1C1C;
+	--red: #AF5F5F;
+	--green: #5F875F;
+	--yellow: #87875F;
+	--blue: #5F87AF;
+	--magenta: #5F5F87;
+	--cyan: #5F8787;
+	--white: #6C6C6C;
+	--light_white: #ffffff;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: "Poppins", sans-serif;
+	background-color: var(--light_white);
+	overflow-x: hidden;
+	max-width: 1400px;
+	margin: 0 auto;
+
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+a {
+	color: var(--black);
+	text-decoration: none;
+}
+
+/* --------------------------------- NAVBAR --------------------------------- */
+
+nav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	padding: 0 50px;
+	height: 80px;
+}
+
+nav .left a {
+	font-size: 22px;
+	font-weight: 600;
+}
+
+nav .right a {
+	padding: 0 10px;
+}
+
+nav .right a i {
+	margin-right: 5px;
+}
+
+/* ---------------------------------- HERO ---------------------------------- */
+
+.hero-section {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	padding: 0 50px;
+	margin: 50px 0;
+	margin-bottom: 100px;
+	gap: 40px;
+}
+
+.hero-section .text {
+	flex: 5;
+}
+
+.hero-section .text h1 {
+	font-size: 45px;
+}
+
+.hero-section .text .social-links {
+	margin-top: 25px;
+}
+
+.hero-section .text .social-links a {
+	color: var(--blue);
+	display: inline-block;
+	padding: 5px 10px;
+	border: 2px solid var(--blue);
+	border-radius: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	transition: .5s;
+}
+
+.hero-section .text .social-links a:hover {
+	color: var(--red);
+	border: 2px solid var(--red);
+}
+
+.hero-section .headshot {
+	flex: 2;
+	display: flex;
+	justify-content: right;
+}
+
+.hero-section .headshot img {
+	width: 350px;
+	border-radius: 50%;
+}
+
+/* --------------------------------- CONTACT -------------------------------- */
+
+.contact-section {
+	padding: 0 50px;
+	margin-bottom: 100px;
+}
+
+.contact-section h2 {
+	font-size: 35px;
+	margin-bottom: 20px;
+}
+
+.contact-section form {
+	display: flex;
+	flex-direction: column;
+}
+
+.contact-section form input,
+.contact-section form textarea {
+	font-family: "Poppins", sans-serif;
+	border: 2px solid var(--blue);
+	background-color: transparent;
+	padding: 10px;
+	margin-bottom: 15px;
+
+	outline: none;
+	resize: none;
+	transition: .5s;
+}
+
+.contact-section form input:focus,
+.contact-section form textarea:focus {
+	border: 2px solid var(--red);
+}
+
+.contact-section form button {
+	font-size: 16px;
+	color: var(--light_white);
+	background-color: var(--blue);
+	border: none;
+	height: 50px;
+	cursor: pointer;
+	transition: .5s;
+}
+
+.contact-section form button:hover {
+	filter: brightness(0.9);
+}
+
+footer {
+	background-color: var(--black);
+	color: var(--light_white);
+	text-align: center;
+	padding: 20px;
+	font-size: 14px;
+	margin-top: auto;
+}
+@media (max-width: 850px) {
+	.hero-section .text h1 {
+		font-size: 35px;
+	}
+}
+
+@media (max-width: 740px) {
+	.hero-section {
+		flex-direction: column-reverse;
+	}
+
+	.hero-section .headshot img {
+		width: 300px;
+	}
+}
+
+@media (max-width: 600px) {
+	/* --------------------------------- NAVBAR --------------------------------- */
+
+	nav {
+		padding: 0 20px;
+	}
+
+	nav .right a span {
+		display: none;
+	}
+
+	nav .right a {
+		font-size: 22px;
+	}
+
+	/* ---------------------------------- HERO ---------------------------------- */
+
+	.hero-section {
+		padding: 0 20px;
+	}
+
+	/* --------------------------------- CONTACT -------------------------------- */
+
+	.contact-section {
+		padding: 0 20px;
+	}
+}
