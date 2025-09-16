@@ -4,8 +4,13 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Brandon Portfolio</title>
-	<link rel="stylesheet" href="assets/fontawesome/all.min.css" />
+
+	<link rel="stylesheet" href="assets/fonts/fontawesome/all.min.css" />
 	<link rel="stylesheet" href="css/style.css" />
+
+	<link rel="icon" href="favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: light)">
+	<link rel="icon" href="favicon-light.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
+
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -40,10 +45,12 @@
 	<main>
 	<section class="hero-section">
 		<div class="text">
-			<h1>
-				Hi, I'm <span>Brandon</span>
-			</h1>
-			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias adipisci ut, sapiente dolor laborum unde placeat nostrum asperiores consequatur ipsam nihil repellendus delectus cupiditate repellat maxime saepe. Nulla, distinctio ratione!</p>
+			<div class="typewriter">
+				<div>
+					<span>Hi, I am</span><p>Brandon</p>
+				</div>
+			</div>
+			<p>Some people are born with the answers. I am one of the people who is driven to find them. My work is defined by a relentless effort to dig deeper, ask the right questions, and not stop until I have discovered the best possible solution. I just want to build cool stuff.</p>
 
 			<div class="social-links">
 				<a href="http://github.com/Br4z" target="_blank" rel="noopener noreferrer">
@@ -64,19 +71,110 @@
 
 	<section id="projects" class="projects-section">
 		<h2>Projects</h2>
+
+		<div class="project-slider">
+			<button class="slider-btn prev-btn" aria-label="Previous slide"><i class="fa-solid fa-chevron-left"></i></button>
+
+			<div class="project-cards">
+				<div class="project-card">
+					<div class="project-image">
+						<img src="assets/images/projects/portfolio.webp" alt="portfolio">
+					</div>
+					<div class="project-info">
+						<h3>Portfolio</h3>
+						<p>Website showcasing my projects and skills.</p>
+					</div>
+					<div class="tech-tags">
+						<span class="tag"><i class="fa-brands fa-html5"></i>HTML</span>
+						<span class="tag"><i class="fa-brands fa-css3-alt"></i>CSS</span>
+						<span class="tag"><i class="fa-brands fa-js"></i>JavaScript</span>
+					</div>
+					<div class="project-links">
+						<a href="https://github.com/Br4z/portfolio" target="_blank" rel="noopener noreferrer">
+							<i class="fa-brands fa-github"></i> Code
+						</a>
+						<a href="#" target="_blank" rel="noopener noreferrer">
+							<i class="fa-solid fa-globe"></i> Live
+						</a>
+					</div>
+				</div>
+				<div class="project-card">
+					<div class="project-image">
+						<img src="https://placehold.co/1920x1080?text=Placeholder"
+							alt="portfolio">
+					</div>
+					<div class="project-info">
+						<h3>Placeholder title</h3>
+						<p>Placeholder description.</p>
+					</div>
+					<div class="tech-tags">
+					</div>
+					<div class="project-links">
+						<a href="#" target="_blank" rel="noopener noreferrer">
+							<i class="fa-brands fa-github"></i> Code
+						</a>
+						<a href="#" target="_blank" rel="noopener noreferrer">
+							<i class="fa-solid fa-globe"></i> Live
+						</a>
+					</div>
+				</div>
+				<div class="project-card">
+					<div class="project-image">
+						<img src="https://placehold.co/1920x1080?text=Placeholder"
+							alt="portfolio">
+					</div>
+					<div class="project-info">
+						<h3>Placeholder title</h3>
+						<p>Placeholder description.</p>
+					</div>
+					<div class="tech-tags">
+					</div>
+					<div class="project-links">
+						<a href="#" target="_blank" rel="noopener noreferrer">
+							<i class="fa-brands fa-github"></i> Code
+						</a>
+						<a href="#" target="_blank" rel="noopener noreferrer">
+							<i class="fa-solid fa-globe"></i> Live
+						</a>
+					</div>
+				</div>
+				<div class="project-card">
+					<div class="project-image">
+						<img src="https://placehold.co/1920x1080?text=Placeholder"
+							alt="portfolio">
+					</div>
+					<div class="project-info">
+						<h3>Placeholder title</h3>
+						<p>Placeholder description.</p>
+					</div>
+					<div class="tech-tags">
+					</div>
+					<div class="project-links">
+						<a href="#" target="_blank" rel="noopener noreferrer">
+							<i class="fa-brands fa-github"></i> Code
+						</a>
+						<a href="#" target="_blank" rel="noopener noreferrer">
+							<i class="fa-solid fa-globe"></i> Live
+						</a>
+					</div>
+				</div>
+			</div>
+			<button class="slider-btn next-btn" aria-label="Next slide"><i class="fa-solid fa-chevron-right"></i></button>
+		</div>
+		<div class="slider-dots"></div>
 	</section>
 
 	<section id="contact" class="contact-section">
 		<h2>Contact</h2>
-		<form>
+		<form action="https://formsubmit.co/df3edc2bfabf36bb95865ffb51ff7e24" method="POST" >
 			<label for="name">Name</label>
-			<input type="text" id="name">
+			<input type="text" name="name" id="name">
 
 			<label for="email">Email</label>
-			<input type="email" id="email">
+			<input type="email" name="email" id="email">
 
 			<label for="message">Message</label>
-			<textarea id="message"></textarea>
+			<textarea id="message" name="message"></textarea>
 
 			<button type="submit">Send</button>
 		</form>
@@ -86,5 +184,8 @@
 	<footer>
 		<p>Created by Brandon</p>
 	</footer>
+
+	<script src="js/slider.js"></script>
+	<script src="js/form.js"></script>
 </body>
 </html>
