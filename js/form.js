@@ -1,4 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
+	let lang = localStorage.getItem("language") || "en"
+
+	const translations = {
+		en: {
+			"name-required": "Name is required",
+			"email-invalid": "Please enter a valid email address"
+		},
+		es: {
+			"name-required": "El nombre es requerido",
+			"email-invalid": "Por favor ingresa un correo electonico válido"
+		}
+	}
+
 	const contact_form = document.querySelector("#contact form")
 	const name_input = document.getElementById("name")
 	const email_input = document.getElementById("email")
@@ -17,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	const validate_name = () => {
 		if (name_input.value.trim() === "") {
-			name_error.textContent = "Name is required"
+			name_error.textContent = translations[lang]["name-required"]
 			return false
 		}
 		name_error.textContent = ""
@@ -28,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 		if (!regex.test(email_input.value.trim())) {
-			email_error.textContent = "Please enter a valid email address"
+			email_error.textContent = translations[lang]["email-invalid"]
 			return false
 		}
 		email_error.textContent = ""
@@ -48,5 +61,13 @@ document.addEventListener("DOMContentLoaded", () => {
 			e.preventDefault()
 			return
 		}
+	})
+
+	document.getElementById("language-btn").addEventListener("click", () => {
+		lang = lang === "en" ? "es" : "en"
+		if (name_error.textContent)
+			validate_name()
+		if (email_error.textContent)
+			validate_email()
 	})
 })

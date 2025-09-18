@@ -38,6 +38,10 @@
 				<i class="fa-solid fa-envelope"></i>
 				<span>contact</span>
 			</a>
+			<button id="language-btn" aria-label="Change language">
+				<i class="fa-solid fa-globe"></i>
+				<span id="current-lang">EN</span>
+			</button>
 		</div>
 	</nav>
 	</header>
@@ -76,7 +80,7 @@
 			<button class="slider-btn prev-btn" aria-label="Previous slide"><i class="fa-solid fa-chevron-left"></i></button>
 
 			<div class="project-cards">
-				<div class="project-card">
+				<div class="project-card" id="portfolio">
 					<div class="project-image">
 						<img src="assets/images/projects/portfolio.webp" alt="portfolio">
 					</div>
@@ -91,30 +95,10 @@
 					</div>
 					<div class="project-links">
 						<a href="https://github.com/Br4z/portfolio" target="_blank" rel="noopener noreferrer">
-							<i class="fa-brands fa-github"></i> Code
+							<i class="fa-brands fa-github"></i><span>Code</span>
 						</a>
 						<a href="#" target="_blank" rel="noopener noreferrer">
-							<i class="fa-solid fa-globe"></i> Live
-						</a>
-					</div>
-				</div>
-				<div class="project-card">
-					<div class="project-image">
-						<img src="https://placehold.co/1920x1080?text=Placeholder"
-							alt="portfolio">
-					</div>
-					<div class="project-info">
-						<h3>Placeholder title</h3>
-						<p>Placeholder description.</p>
-					</div>
-					<div class="tech-tags">
-					</div>
-					<div class="project-links">
-						<a href="#" target="_blank" rel="noopener noreferrer">
-							<i class="fa-brands fa-github"></i> Code
-						</a>
-						<a href="#" target="_blank" rel="noopener noreferrer">
-							<i class="fa-solid fa-globe"></i> Live
+							<i class="fa-solid fa-globe"></i><span>Live</span>
 						</a>
 					</div>
 				</div>
@@ -131,10 +115,10 @@
 					</div>
 					<div class="project-links">
 						<a href="#" target="_blank" rel="noopener noreferrer">
-							<i class="fa-brands fa-github"></i> Code
+							<i class="fa-brands fa-github"></i><span>Code</span>
 						</a>
 						<a href="#" target="_blank" rel="noopener noreferrer">
-							<i class="fa-solid fa-globe"></i> Live
+							<i class="fa-solid fa-globe"></i><span>Live</span>
 						</a>
 					</div>
 				</div>
@@ -151,10 +135,30 @@
 					</div>
 					<div class="project-links">
 						<a href="#" target="_blank" rel="noopener noreferrer">
-							<i class="fa-brands fa-github"></i> Code
+							<i class="fa-brands fa-github"></i><span>Code</span>
 						</a>
 						<a href="#" target="_blank" rel="noopener noreferrer">
-							<i class="fa-solid fa-globe"></i> Live
+							<i class="fa-solid fa-globe"></i><span>Live</span>
+						</a>
+					</div>
+				</div>
+				<div class="project-card">
+					<div class="project-image">
+						<img src="https://placehold.co/1920x1080?text=Placeholder"
+							alt="portfolio">
+					</div>
+					<div class="project-info">
+						<h3>Placeholder title</h3>
+						<p>Placeholder description.</p>
+					</div>
+					<div class="tech-tags">
+					</div>
+					<div class="project-links">
+						<a href="#" target="_blank" rel="noopener noreferrer">
+							<i class="fa-brands fa-github"></i><span>Code</span>
+						</a>
+						<a href="#" target="_blank" rel="noopener noreferrer">
+							<i class="fa-solid fa-globe"></i><span>Live</span>
 						</a>
 					</div>
 				</div>
@@ -187,5 +191,6 @@
 
 	<script src="js/slider.js"></script>
 	<script src="js/form.js"></script>
+	<script src="js/language.js"></script>
 </body>
 </html>
