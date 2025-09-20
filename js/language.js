@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			// Navigation
 			"nav-home": "home",
 			"nav-blog": "blog",
-			"nav-projects": "projects",
 			"nav-contact": "contact",
 
 			// Hero section
@@ -34,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			// Navigation
 			"nav-home": "inicio",
 			"nav-blog": "blog",
-			"nav-projects": "proyectos",
 			"nav-contact": "contactos",
 
 			// Hero section
@@ -62,9 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	const initialize_language_elements = () => {
 		// Navigation
-		document.querySelector("a[href='#home'] span").setAttribute("data-lang", "nav-home")
-		document.querySelector("a[href='#about'] span").setAttribute("data-lang", "nav-about")
-		document.querySelector("a[href='#projects'] span").setAttribute("data-lang", "nav-projects")
+		document.querySelector("a[href='/'] span").setAttribute("data-lang", "nav-home")
 		document.querySelector("a[href='#contact'] span").setAttribute("data-lang", "nav-contact")
 
 		// Hero section
