@@ -11,25 +11,25 @@
 	gap: 40px;
 }
 
-.hero-section .text {
+.text {
 	flex: 5;
 }
 
-.hero-section .text .typewriter {
+.typewriter {
 	font-size: var(--fs-xxl);
 }
 
-.hero-section .text .typewriter div {
+.typewriter div {
 	display: flex;
 	align-items: center;
 }
 
-.hero-section .text .typewriter span {
+.typewriter span {
 	margin-right: 10px;
 	white-space: nowrap;
 }
 
-.hero-section .text .typewriter p {
+.typewriter p {
 	font-family: monospace;
 	overflow: hidden;
 	border-right: 1px solid;
@@ -56,11 +56,11 @@
 	}
 }
 
-.hero-section .text .social-links {
+.social-links {
 	margin-top: 25px;
 }
 
-.hero-section .text .social-links a {
+.social-links a {
 	color: var(--blue);
 	display: inline-block;
 	padding: 5px 10px;
@@ -71,18 +71,18 @@
 	transition: .5s;
 }
 
-.hero-section .text .social-links a:hover {
+.social-links a:hover {
 	color: var(--red);
 	border: 2px solid var(--red);
 }
 
-.hero-section .headshot {
+.headshot {
 	flex: 2;
 	display: flex;
 	justify-content: right;
 }
 
-.hero-section .headshot img {
+.headshot img {
 	width: 350px;
 	border-radius: 50%;
 }
@@ -178,27 +178,6 @@
 	margin-bottom: 5px;
 }
 
-.tech-tags {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 8px;
-	margin-bottom: 10px;
-}
-
-.tech-tags .tag {
-	background-color: var(--blue);
-	color: var(--light_white);
-	padding: 5px 10px;
-	border-radius: 20px;
-	font-size: var(--fs-xs);
-	font-weight: 600;
-}
-
-.tech-tags .tag i {
-	font-size: var(--fs-base);
-	margin-right: 5px;
-}
-
 .project-links {
 	display: flex;
 	margin: 0 5px;
@@ -225,7 +204,7 @@
 	margin-top: 20px;
 }
 
-.slider-dots .dot {
+.dot {
 	width: 10px;
 	height: 10px;
 	border-radius: 50%;
@@ -233,8 +212,7 @@
 	cursor: pointer;
 	transition: .5s;
 }
-
-.slider-dots .dot.active {
+.dot.active {
 	background-color: var(--red);
 }
 
@@ -255,9 +233,9 @@
 	flex-direction: column;
 }
 
-.contact-section form input,
-.contact-section form textarea {
-	font-family: "Poppins", sans-serif;
+.contact-section input,
+.contact-section textarea {
+	font-family: inherit;
 	border: 2px solid var(--blue);
 	background-color: transparent;
 	padding: 10px;
@@ -268,13 +246,13 @@
 	transition: .5s;
 }
 
-.contact-section form input:focus,
-.contact-section form textarea:focus {
+.contact-section input:focus,
+.contact-section textarea:focus {
 	border: 2px solid var(--red);
 	box-shadow: 0 0 5px var(--red);
 }
 
-.contact-section form button {
+.contact-section button {
 	font-size: var(--fs-base);
 	color: var(--light_white);
 	background-color: var(--blue);
@@ -284,7 +262,7 @@
 	transition: .5s;
 }
 
-.contact-section form button:hover {
+.contact-section button:hover {
 	background-color: var(--red);
 	transform: translateY(-2px);
 }
@@ -302,7 +280,7 @@
 		flex-direction: column-reverse;
 	}
 
-	.hero-section .headshot img {
+	.headshot img {
 		width: 300px;
 	}
 
@@ -351,11 +329,11 @@
 }
 
 @media (max-width: 375px) {
-	.hero-section .text .typewriter span {
+	.typewriter span {
 		font-size: var(--fs-xxl);
 	}
 
-	.hero-section .text .typewriter p {
+	.typewriter p {
 		font-size: var(--fs-xxl);
 	}
 }
