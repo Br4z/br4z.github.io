@@ -49,10 +49,11 @@
 }
 
 .tech-tags .tag {
+	cursor: pointer;
 	border: none;
 }
 
-.tags-filters .tech-tags .tag:hover {
+.tags-filter .tag:hover {
 	background-color: var(--red);
 	transform: translateX(3px);
 }
@@ -134,7 +135,6 @@
 	justify-content: space-between;
 	align-items: center;
 	margin-top: 10px;
-	gap: 12px; /* subtle spacing between tags and "Read more" */
 }
 
 .blog-pagination {
@@ -145,6 +145,61 @@
 	justify-content: center;
 	align-items: center;
 	gap: 15px;
+}
+
+.pagination-btn {
+	background-color: var(--blue);
+	color: var(--light_white);
+	border: 2px solid var(--blue);
+	padding: 5px;
+	border-radius: 5px;
+	cursor: pointer;
+	font-family: inherit;
+	font-weight: 600;
+	align-items: center;
+	transition: .5;
+}
+
+.pagination-btn:hover:not(:disabled) {
+	background-color: var(--red);
+	border-color: var(--red);
+	transform: translateY(-2px);
+}
+
+.pagination-btn:disabled {
+	background-color: var(--white);
+	border-color: var(--white);
+	cursor: not-allowed;
+	opacity: 0.5;
+}
+
+.page-numbers {
+	display: flex;
+	gap: 8px;
+}
+
+.page-number {
+	background-color: transparent;
+	color: var(--black);
+	border: 2px solid var(--blue);
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	cursor: pointer;
+	font-family: inherit;
+	font-weight: 600;
+	transition: .5s;
+}
+
+.page-number:hover {
+	background-color: var(--blue);
+	color: var(--light_white);
+}
+
+.page-number.active {
+	background-color: var(--red);
+	border-color: var(--red);
+	color: var(--light_white);
 }
 
 .read-more {
@@ -192,5 +247,15 @@
 	.blog-search,
 	.blog-pagination {
 		padding: 20px;
+	}
+
+	.pagination-btn {
+		font-size: var(--fs-sm);
+	}
+
+	.page-number {
+		width: 35px;
+		height: 35px;
+		font-size: var(--fs-sm);
 	}
 }

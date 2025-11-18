@@ -1,0 +1,22 @@
+{
+	"name": "portfolio",
+	"description": "I have always wanted a full HTML + CSS + JavaScript portfolio and here it is. It is highly inspired by this [video](https://www.youtube.com/watch?v=Slxdo0Dqxlk).",
+	"main": "index.js",
+	"scripts": {
+		"build:blog": "node ./scripts/generate_blog.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Br4z/portfolio.git"
+	},
+	"author": "Brandon",
+	"type": "module",
+	"bugs": {
+		"url": "https://github.com/Br4z/portfolio/issues"
+	},
+	"homepage": "https://github.com/Br4z/portfolio#readme",
+	"dependencies": {
+		"gray-matter": "^4.0.3",
+		"marked": "^17.0.0"
+	}
+}
