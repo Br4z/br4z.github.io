@@ -105,7 +105,7 @@ Visual Studio Code ranks among the most popular text editors due to its ease of 
 
 - `files.autoSave`: controls automatic file saving.
 
-	> `"onFucusChange"`.
+	> `"onFocusChange"`.
 
 - `security.workspace.trust.untrustedFiles`: defines handling of untrusted files in a workspace.
 

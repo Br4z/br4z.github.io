@@ -45,13 +45,13 @@ function generate_blog_item(post) {
 
 	const tags_HTML = post.tags.map(tag => {
 		const icon = tag_icons[tag.toLowerCase()] || "fa-solid fa-tag"
-		return `<span class="tag"><i class="${icon}"></i>${tag}</span>`
+		return `<span class="tag"><i class="${icon}" aria-hidden="true"></i>${tag}</span>`
 	}).join("\n\t\t\t\t\t\t\t")
 
 	return `
 			<article class="blog-item">
 				<div class="blog-image">
-					<img src="${post.image}" alt="${post.title}">
+					<img src="${post.image}" alt="${post.title} preview image" loading="lazy">
 				</div>
 				<div class="blog-content">
 					<h2>${post.title}</h2>
@@ -76,6 +76,7 @@ function generate_post_page(post) {
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="${post.excerpt}">
 	<title>${post.title} - Brandon's Blog</title>
 
 	<link rel="stylesheet" href="/assets/fonts/fontawesome/all.min.css" />
@@ -114,8 +115,8 @@ function generate_post_page(post) {
 	</header>
 	<main>
 		<article class="post">
+			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
 			<header class="post-header">
-				<h1>${post.title}</h1>
 				<div class="post-meta">
 					<span class="date">${post.date_str}</span>
 				</div>
@@ -123,7 +124,7 @@ function generate_post_page(post) {
 			<div class="post-content">
 				${post.content}
 			</div>
-			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Blog</a>
+			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
 		</article>
 	</main>
 	<footer>

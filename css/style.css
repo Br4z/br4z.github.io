@@ -7,7 +7,15 @@
 	--magenta: #5F5F87;
 	--cyan: #5F8787;
 	--white: #6C6C6C;
-	--light_white: #ffffff;
+
+	--light_black: #444444;
+	--light_red: #D78787;
+	--light_green: #87AF87;
+	--light_yellow: #FFFFAF;
+	--light_blue: #87AFD7;
+	--light_magenta: #8787AF;
+	--light_cyan: #5FAFAF;
+	--light_white: #FFFFFF;
 }
 
 :root {
@@ -56,6 +64,20 @@ body {
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
+}
+
+.skip-link {
+	position: absolute;
+	top: -40px;
+	left: 0;
+	background: var(--blue);
+	color: var(--light_white);
+	padding: 8px;
+	z-index: 100;
+}
+
+.skip-link:focus {
+	top: 0;
 }
 
 a {

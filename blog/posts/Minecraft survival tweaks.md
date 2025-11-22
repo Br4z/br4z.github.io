@@ -140,7 +140,7 @@ A vanilla‑style resource pack is preferred, with [Faithful](https://modrinth.c
 
 - No pumpkin overlay.
 
-- Smalle utilities.
+- Smaller utilities.
 
 #### 3D
 

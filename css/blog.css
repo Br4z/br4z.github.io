@@ -204,6 +204,7 @@
 
 .read-more {
 	align-self: flex-end;
+	white-space: nowrap;
 	color: var(--blue);
 	font-weight: 600;
 	transition: .5s;

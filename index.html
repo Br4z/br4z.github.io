@@ -17,6 +17,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+	<a href="#main-content" class="skip-link">Skip to main content</a>
 	<header>
 		<nav>
 			<div class="left">
@@ -43,7 +44,7 @@
 		</nav>
 	</header>
 
-	<main>
+	<main id="main-content">
 	<section class="hero-section">
 		<div class="text">
 			<div class="typewriter">
@@ -168,16 +169,16 @@
 	<section id="contact" class="contact-section">
 		<h2>Contact</h2>
 		<form action="https://formsubmit.co/df3edc2bfabf36bb95865ffb51ff7e24" method="POST" >
-			<label for="name">Name</label>
-			<input type="text" name="name" id="name">
+			<label for="name">Name <span aria-label="required">*</span></label>
+			<input type="text" name="name" id="name" required aria-required="true">
 
-			<label for="email">Email</label>
-			<input type="email" name="email" id="email">
+			<label for="email">Email <span aria-label="required">*</span></label>
+			<input type="email" name="email" id="email" required aria-required="true">
 
-			<label for="message">Message</label>
-			<textarea id="message" name="message"></textarea>
+			<label for="message">Message <span aria-label="required">*</span></label>
+			<textarea id="message" name="message" required aria-required="true"></textarea>
 
-			<button type="submit">Send</button>
+			<button type="submit" aria-label="Send contact form">Send</button>
 		</form>
 	</section>
 	</main>
