@@ -1,16 +1,50 @@
+/**
+ * Blog Pagination Module
+ * Handles pagination for both the main blog list and search results.
+ * Listens for "blogContentUpdated" events to refresh when content changes.
+ */
 addEventListener("DOMContentLoaded", () => {
-	const blog_list = document.querySelector(".blog-list")
+	// DOM elements
+	const blog_list_html = document.querySelector(".blog-list")
+
+	let blog_list
 	const prev_btn = document.querySelector(".blog-pagination .pagination-btn:first-child")
 	const next_btn = document.querySelector(".blog-pagination .pagination-btn:last-child")
 	const page_numbers_container = document.querySelector(".page-numbers")
 
-	const posts = Array.from(document.querySelectorAll(".blog-item"))
+	// Pagination state
+	let posts
 	const post_per_page = 5
-	const total_pages = Math.ceil(posts.length / post_per_page)
+	let total_pages
 
 	let current_page = 1
 
+	/**
+	 * Updates pagination variables based on the active container
+	 * Detects whether to paginate the main blog list or search results
+	 */
+	const update_variables = () => {
+		let parent_container
+
+		// Check which container is visible and update accordingly
+		if (blog_list_html.style.display == "none") {
+			parent_container = "#search-results"
+			blog_list = document.getElementById("search-results")
+		} else {
+			parent_container = ".blog-list"
+			blog_list = blog_list_html
+		}
+
+		posts = Array.from(document.querySelectorAll(`${parent_container} .blog-item`))
+		total_pages = Math.ceil(posts.length / post_per_page)
+	}
+
+	/**
+	 * Renders a specific page of blog posts
+	 * @param {number} page - The page number to render (1-indexed)
+	 */
 	const render_page = (page) => {
+		// Ensure page is within valid range
 		if (page < 1)
 			page = 1
 		else if (page > total_pages)
@@ -39,6 +73,10 @@ addEventListener("DOMContentLoaded", () => {
 		blog_list.scrollIntoView({ behavior: "smooth", block: "start" })
 	}
 
+	/**
+	 * Initializes pagination controls by creating page number buttons
+	 * Clears existing buttons and generates new ones based on total_pages
+	 */
 	const initialize_pagination = () => {
 		// Clear existing page numbers
 		page_numbers_container.innerHTML = ""
@@ -56,8 +94,22 @@ addEventListener("DOMContentLoaded", () => {
 		}
 	}
 
+	/**
+	 * Refreshes the entire pagination system
+	 * Updates variables, reinitializes controls, and renders the first page
+	 */
+	const refresh_pagination = () => {
+		update_variables()
+		initialize_pagination()
+		render_page(1)
+	}
+
+	// Listen for content updates from search/filter module
+	document.addEventListener("blogContentUpdated", refresh_pagination)
+
+	// Navigation button event listeners
 	prev_btn.addEventListener("click", () => render_page(current_page - 1))
 	next_btn.addEventListener("click", () => render_page(current_page + 1))
-	initialize_pagination()
-	render_page(1)
+
+	refresh_pagination()
 })

@@ -48,17 +48,17 @@
 	border-color: var(--red);
 }
 
-.tech-tags .tag {
+.blog-filters .tech-tags .tag {
 	cursor: pointer;
 	border: none;
 }
 
-.tags-filter .tag:hover {
+.blog-filters .tags-filter .tag:hover {
 	background-color: var(--red);
 	transform: translateX(3px);
 }
 
-.tag.active {
+.blog-filters .tag.active {
 	background-color: var(--red);
 }
 

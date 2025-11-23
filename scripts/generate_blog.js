@@ -3,10 +3,18 @@ import matter from "gray-matter"
 import path from "path"
 
 import { marked } from "marked"
+import marked_katex from "marked-katex-extension"
 
 const POSTS_DIR = "./blog/posts"
 const OUTPUT_FILE = "./blog/index.html"
 const TEMPLATE_FILE = "./blog/template.html"
+
+
+// Configure marked to support KaTeX for math rendering
+marked.use(marked_katex({
+	throwOnError: false
+}))
+
 
 // Read all Markdown files
 function get_posts() {
@@ -49,7 +57,7 @@ function generate_blog_item(post) {
 	}).join("\n\t\t\t\t\t\t\t")
 
 	return `
-			<article class="blog-item">
+			<article class="blog-item" data-tags="${post.tags.join(",")}">
 				<div class="blog-image">
 					<img src="${post.image}" alt="${post.title} preview image" loading="lazy">
 				</div>
@@ -90,6 +98,7 @@ function generate_post_page(post) {
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 </head>
 <body>
 	<header>
