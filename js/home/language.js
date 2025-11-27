@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			// Hero section
 			"hero-greeting": "Hi, I am",
-			"hero-desc": "Some people are born with the answers. I am one of the people who is driven to find them. My work is defined by a relentless effort to dig deeper, ask the right questions, and not stop until I have discovered the best possible solution. I just want to build cool stuff.",
+			"hero-desc": "I am a Systems Engineer student with a deep passion for Linux, Open Source and programming.",
 
 			// Projects section
 			"projects-title": "Projects",
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			// Hero section
 			"hero-greeting": "Hola, soy",
-			"hero-desc": "Algunas personas nacen con las respuestas. Yo soy una de las personas que se esfuerza por encontrarlas. Mi trabajo se define por un esfuerzo incansable para profundizar, hacer las preguntas correctas y no detenerme hasta que haya descubierto la mejor solución posible. Solo quiero construir cosas geniales.",
+			"hero-desc": "Soy un estudiante de Ingeniería de Sistemas, me apasiona profundamente Linux, el código abierto y la programación.",
 
 			// Projects section
 			"projects-title": "Proyectos",

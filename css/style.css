@@ -102,6 +102,7 @@ nav {
 }
 
 .right {
+	display: flex;
 	white-space: nowrap;
 }
 

@@ -1,12 +1,12 @@
-name: Build blog
+name: Build home
 
 on:
   push:
     branches: [ main ]
     paths:
-      - "blog/assets/data/posts/**"
-      - "blog/template.html"
-      - "scripts/generate_blog.js"
+      - "/assets/data/projects.json"
+      - "template.html"
+      - "scripts/generate_home.js"
   workflow_dispatch:
 
 jobs:
@@ -26,13 +26,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build blog
-        run: npm run build:blog
+      - name: Build home
+        run: npm run build:home
 
       - name: Commit and push generated files
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add blog/index.html blog/posts/html/
-          git diff --staged --quiet || git commit -m "chore: rebuild blog [skip ci]"
+          git diff --staged --quiet || git commit -m "chore: rebuild home [skip ci]"
           git push

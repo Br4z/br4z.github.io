@@ -5,7 +5,7 @@ import path from "path"
 import { marked } from "marked"
 import marked_katex from "marked-katex-extension"
 
-const POSTS_DIR = "./blog/posts"
+const POSTS_DIR = "./assets/data/posts"
 const OUTPUT_FILE = "./blog/index.html"
 const TEMPLATE_FILE = "./blog/template.html"
 
@@ -71,7 +71,7 @@ function generate_blog_item(post) {
 						<div class="tech-tags">
 							${tags_HTML}
 						</div>
-						<a href="posts/html/${post.slug}.html" class="read-more">Read more <i class="fa-solid fa-arrow-right"></i></a>
+						<a href="posts/${post.slug}.html" class="read-more">Read more <i class="fa-solid fa-arrow-right"></i></a>
 					</div>
 				</div>
 			</article>`
@@ -154,12 +154,12 @@ function build_blog() {
 	console.log(`Generated ${OUTPUT_FILE} with ${posts.length} posts`)
 
 	// Ensure the output directory exists
-	const html_dir = "./blog/posts/html"
+	const html_dir = "./blog/posts/"
 	fs.mkdirSync(html_dir, { recursive: true })
 
 	posts.forEach(post => {
 		const post_HTML = generate_post_page(post)
-		const post_path = `./blog/posts/html/${post.slug}.html`
+		const post_path = `./blog/posts/${post.slug}.html`
 		fs.writeFileSync(post_path, post_HTML)
 		console.log(`Generated ${post_path}`)
 	})
