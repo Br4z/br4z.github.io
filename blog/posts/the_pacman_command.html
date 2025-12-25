@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="A concise guide to using the `pacman` package manager on Arch Linux: refreshing the database, managing packages, and system maintenance">
+	<title>The pacman command - Brandon's Blog</title>
+
+	<link rel="stylesheet" href="/assets/fonts/fontawesome/all.min.css" />
+	<link rel="stylesheet" href="/css/style.css" />
+	<link rel="stylesheet" href="/css/blog.css" />
+	<link rel="stylesheet" href="/css/post.css" />
+
+	<link rel="icon" href="/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: light)">
+	<link rel="icon" href="/favicon-light.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+</head>
+<body>
+	<header>
+		<nav>
+			<div class="left">
+				<a href="/">Brandon</a>
+			</div>
+			<div class="right">
+				<a href="/">
+					<i class="fa-solid fa-house"></i>
+					<span>home</span>
+				</a>
+				<a href="/blog/" class="active">
+					<i class="fa-solid fa-pen"></i>
+					<span>blog</span>
+				</a>
+				<a href="/#contact">
+					<i class="fa-solid fa-envelope"></i>
+					<span>contact</span>
+				</a>
+			</div>
+		</nav>
+	</header>
+	<main>
+		<article class="post">
+			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
+			<header class="post-header">
+				<div class="post-meta">
+					<span class="date">August 30, 2025</span>
+				</div>
+			</header>
+			<div class="post-content">
+				<h1>The pacman command</h1>
+<h2>Refreshing the Package Database</h2>
+<pre><code class="language-bash">pacman -Syy
+</code></pre>
+<ul>
+<li><p><code>S</code>: sync.</p>
+</li>
+<li><p><code>y</code>: refresh the packets database.</p>
+</li>
+<li><p><code>y</code>: force to refresh the local databases (even if it is up to date).</p>
+</li>
+</ul>
+<h2>The mirror list</h2>
+<p>When <code>pacman</code> performs an operation that requires synchronization (like installing a package), it uses the servers listed in <code>/etc/pacman.d/mirrorlist</code>, trying them from top to bottom.</p>
+<blockquote>
+<p>If your downloads are slow, it is a good idea to regenerate your mirror list.</p>
+</blockquote>
+<h2>Managing packages</h2>
+<ul>
+<li><p><code>pacman -S &lt;package_name&gt;</code>: to install a package. <code>pacman</code> will automatically handle and install any necessary dependencies. You can install multiple packages at once by listing them with spaces in between.</p>
+</li>
+<li><p><code>pacman -R &lt;package_name&gt;</code>: to uninstall a package.</p>
+<ul>
+<li><code>R</code>: remove.</li>
+</ul>
+</li>
+<li><p><code>pacman -Ss &lt;keyword&gt;</code>: to search for a package if you do not know the exact name.</p>
+</li>
+</ul>
+<h2>System maintenance</h2>
+<ul>
+<li><p><code>pacman -Syu</code>: it synchronizes your package databases and then upgrades all out-of-date packages on the system.</p>
+<ul>
+<li><code>u</code>: update.</li>
+</ul>
+<blockquote>
+<p>Two weeks between upgrades is a good amount of time.</p>
+</blockquote>
+</li>
+<li><p><code>pacman -Qdt</code>: to find orphan packages. These are packages that were installed as dependencies but are no longer required by any installed package.</p>
+<ul>
+<li><p><code>Q</code>: query.</p>
+</li>
+<li><p><code>d</code>: skips dependency checks.</p>
+</li>
+<li><p><code>t</code>: limit the results to orphan packages.</p>
+</li>
+</ul>
+</li>
+</ul>
+
+			</div>
+			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
+		</article>
+	</main>
+	<footer>
+		<p>Created by Brandon</p>
+	</footer>
+</body>
+</html>

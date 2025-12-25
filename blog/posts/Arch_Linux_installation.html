@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="A practical, step-by-step guide to install Arch Linux from a blank drive to a clean, bootable system.">
+	<title>Arch Linux Installation - Brandon's Blog</title>
+
+	<link rel="stylesheet" href="/assets/fonts/fontawesome/all.min.css" />
+	<link rel="stylesheet" href="/css/style.css" />
+	<link rel="stylesheet" href="/css/blog.css" />
+	<link rel="stylesheet" href="/css/post.css" />
+
+	<link rel="icon" href="/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: light)">
+	<link rel="icon" href="/favicon-light.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+</head>
+<body>
+	<header>
+		<nav>
+			<div class="left">
+				<a href="/">Brandon</a>
+			</div>
+			<div class="right">
+				<a href="/">
+					<i class="fa-solid fa-house"></i>
+					<span>home</span>
+				</a>
+				<a href="/blog/" class="active">
+					<i class="fa-solid fa-pen"></i>
+					<span>blog</span>
+				</a>
+				<a href="/#contact">
+					<i class="fa-solid fa-envelope"></i>
+					<span>contact</span>
+				</a>
+			</div>
+		</nav>
+	</header>
+	<main>
+		<article class="post">
+			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
+			<header class="post-header">
+				<div class="post-meta">
+					<span class="date">December 2, 2025</span>
+				</div>
+			</header>
+			<div class="post-content">
+				<h1>Arch Linux installation</h1>
+<p>For those who have contemplated installing the reputedly &quot;dreaded&quot; Arch Linux but have been discouraged by its perceived difficulty, the present guide offers a practical, step-by-step path from a blank drive to a clean, bootable system.</p>
+<blockquote>
+<p>Reading the entire document before executing commands is strongly encouraged.</p>
+</blockquote>
+<blockquote>
+<p>WARNING: the information herein should be verified whenever possible, as certain steps may evolve over time. Every effort will be made to keep the guide current.</p>
+</blockquote>
+<h2>Preinstallation considerations</h2>
+<h3>Real time clock alignment for dual boot systems</h3>
+<p>Linux stores the hardware clock in UTC, whereas Windows records local time. To avoid clock drift, on Windows:</p>
+<ol>
+<li>Create <code>RealTimeIsUniversal</code> as a <code>DWORD</code> of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>32</mn></mrow><annotation encoding="application/x-tex">32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32</span></span></span></span> bits with value <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> under <code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation</code>.</li>
+</ol>
+<h3>SSH setup (remote installation)</h3>
+<p>Configuring OpenSSH in the live environment permits the entire installation to be driven from another computer via a secure shell.</p>
+<ol>
+<li><p><code>systemctl status sshd</code>.</p>
+<blockquote>
+<p>If the process is not running, run it with <code>systemctl start sshd</code>.</p>
+</blockquote>
+</li>
+<li><p><code>passwd</code>: set the root&#39;s password.</p>
+</li>
+<li><p><code>ip addr show</code>: identify the installer&#39;s IP address.</p>
+</li>
+<li><p>Run <code>ssh root@&lt;installer IP&gt;</code> from the other device.</p>
+</li>
+</ol>
+<h3>Console legibility</h3>
+<p>Setting a larger console font with <code>setfont ter-132n</code> improves readability on Full-HD displays; select a smaller size on lower-resolution panels.</p>
+<h3>UEFI verification</h3>
+<p>Presence of entries in <code>/sys/firmware/efi/efivars/</code> confirms a UEFI boot.</p>
+<h3>Keyboard layout</h3>
+<ol>
+<li><p>List available layouts: <code>localectl list-keymaps</code>.</p>
+</li>
+<li><p>Filter with <code>grep</code>, e.g. <code>localectl list-keymaps | grep la-latin1</code>.</p>
+</li>
+<li><p>Load the layout: <code>loadkeys &lt;layout&gt;</code>.</p>
+</li>
+</ol>
+<h2>Networking</h2>
+<h3>Detecting interfaces</h3>
+<p><code>ip addr show</code> lists active interfaces.</p>
+<h3>Wi-Fi connection (<code>iwd</code>)</h3>
+<ol>
+<li><p>Launch the &quot;iwd&quot; shell: <code>iwctl</code>.</p>
+</li>
+<li><p>Confirm the adapter appears with <code>device list</code>; troubleshoot via the <a href="https://wiki.archlinux.org/title/iwd">Arch Wiki</a> if absent.</p>
+</li>
+<li><p>Scan and enumerate networks.</p>
+<pre><code>station &lt;device&gt; scan
+station &lt;device&gt; get-networks
+station &lt;device&gt; connect &quot;&lt;SSID&gt;&quot;
+</code></pre>
+<blockquote>
+<p>Alternatively, using <code>iwctl</code>: <code>iwctl --passphrase &lt;passphrase&gt; station &lt;device&gt; connect &lt;SSID&gt;</code></p>
+</blockquote>
+</li>
+</ol>
+<p>A wired connection simplifies installation.</p>
+<h2>Disk partitioning</h2>
+<h3>Target layout</h3>
+<table>
+<thead>
+<tr>
+<th align="center">partition</th>
+<th align="center">suggested size</th>
+<th align="center">filesystem</th>
+<th align="left">purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>/efi</code></td>
+<td align="center">500 MiB</td>
+<td align="center">FAT32</td>
+<td align="left">holds bootloaders and NVRAM entries for UEFI firmware.</td>
+</tr>
+<tr>
+<td align="center"><code>root</code></td>
+<td align="center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mn>40</mn><mtext>GiB</mtext></mrow><annotation encoding="application/x-tex">\geq 40 \text{GiB}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">40</span><span class="mord text"><span class="mord">GiB</span></span></span></span></span></td>
+<td align="center">ext4</td>
+<td align="left">operating system files.</td>
+</tr>
+<tr>
+<td align="center"><code>/home</code></td>
+<td align="center">remaining space</td>
+<td align="center">ext4 (optional)</td>
+<td align="left">user data.</td>
+</tr>
+</tbody></table>
+<h3>Creating partitions with <code>fdisk</code></h3>
+<ol>
+<li><p><code>fdisk -l</code>: list all disks.</p>
+</li>
+<li><p><code>fdisk /dev/&lt;device&gt;</code>.</p>
+</li>
+<li><p><code>g</code>: initialize a GPT table.</p>
+</li>
+<li><p>Create the <code>EFI</code>.</p>
+<pre><code>n       # New partition
+1       # Partition number
+&lt;ENTER&gt; # Accept default first sector
++500M
+t 1     # Change type
+</code></pre>
+</li>
+<li><p>Create the <code>/</code>.</p>
+<pre><code>n
+2
+     # Accept default first sector
++50G # Size
+</code></pre>
+</li>
+<li><p>Create <code>/home</code>.</p>
+<pre><code>n
+3
+  # Accept defaults to use remaining space
+</code></pre>
+<blockquote>
+<p>No special type change is required; the default Linux filesystem code is correct.</p>
+</blockquote>
+</li>
+<li><p><code>w</code>: write changes and quit.</p>
+</li>
+</ol>
+<h3>Formatting partitions</h3>
+<ol>
+<li><p><code>mkfs.fat -F32 /dev/&lt;EFI&gt;</code>.</p>
+</li>
+<li><p><code>mkfs.ext4 /dev/&lt;root&gt;</code>.</p>
+</li>
+<li><p><code>mkfs.ext4 /dev/&lt;home&gt;</code>.</p>
+</li>
+</ol>
+<h3>Mounting for installation</h3>
+<ol>
+<li><p><code>mount /dev/&lt;root&gt; /mnt</code>.</p>
+</li>
+<li><p><code>mkdir -p /mnt/boot/EFI</code>.</p>
+</li>
+<li><p><code>mount /dev/&lt;EFI&gt; /mnt/boot/</code>.</p>
+</li>
+<li><p><code>mkdir /mnt/home</code>.</p>
+</li>
+<li><p><code>mount /dev/&lt;home&gt; /mnt/home</code>.</p>
+</li>
+</ol>
+<h2>Optimizing mirrors</h2>
+<ol>
+<li><p><code>cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak</code>.</p>
+</li>
+<li><p><code>reflector --verbose --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist</code>.</p>
+</li>
+</ol>
+<h2>Filesystem table</h2>
+<pre><code class="language-bash">genfstab -U /mnt &gt;&gt; /mnt/etc/fstab
+</code></pre>
+<h3>Bonus (filesystem table)</h3>
+<p>When a separate NTFS disk is used for general data storage, it can be incorporated as follows:</p>
+<ol>
+<li><p><code>mkdir /mnt/files</code>.</p>
+</li>
+<li><p><code>pacman -S ntfs-3g</code>.</p>
+</li>
+<li><p><code>mount /dev/&lt;disk partition&gt; /mnt/files</code>.</p>
+</li>
+</ol>
+<blockquote>
+<p>After mounting, the filesystem table must be regenerated.</p>
+</blockquote>
+<p>The following entry illustrates a typical NTFS partition configuration in <code>/etc/fstab</code>:</p>
+<pre><code>UUID=64A6257CA625503A /home/braz/files ntfs-3g auto,exec,users,uid=1000,gid=1000,noatime 0 2
+</code></pre>
+<h2>Base system installation</h2>
+<ol>
+<li><p><code>pacstrap -i /mnt base base-devel linux linux-headers linux-firmware git sudo networkmanager</code>.</p>
+<p> Another kernel can be installed instead (like the Zen one) or even have more than one. This is useful if one breaks (which rarely happens). The packages for the Zen kernel are <code>linux-zen</code> and <code>linux-zen-headers</code>.</p>
+<blockquote>
+<p>Depending on the configuration you have chosen (Linux, Zen, or both kernels), the settings in the &quot;boot manager&quot; section for systemd-boot may change.</p>
+</blockquote>
+</li>
+<li><p><code>arch-chroot /mnt</code>.</p>
+</li>
+<li><p>Enable <code>networkmanager</code>: <code>systemctl enable NetworkManager</code>.</p>
+</li>
+</ol>
+<h2>Microcode</h2>
+<p><code>pacman -S amd-ucode</code> for AMD processors or <code>intel-ucode</code> for Intel processors.</p>
+<h2>Locales and console</h2>
+<ol>
+<li><p>Uncomment <code>en_US.UTF-8</code> in <code>/etc/locale.gen</code>, then run <code>locale-gen</code>.</p>
+</li>
+<li><p>Create <code>/etc/locale.conf</code> containing <code>LANG=en_US.UTF-8</code>.</p>
+</li>
+<li><p>Add <code>KEYMAP=us</code> in <code>/etc/vconsole.conf</code>.</p>
+</li>
+</ol>
+<h2>User accounts</h2>
+<ol>
+<li><p><code>passwd</code>: set the root password.</p>
+</li>
+<li><p><code>useradd -m -g users -G wheel &lt;username&gt;</code>.</p>
+<blockquote>
+<p>In certain administrative scenarios, an account may be created without assignment to any supplementary groups (<code>useradd -m &lt;username&gt;</code>); however, separate configuration within <code>/etc/sudoers.d</code> is required to grant the necessary privileges.</p>
+</blockquote>
+</li>
+<li><p><code>passwd &lt;username&gt;</code>.</p>
+</li>
+<li><p><code>EDITOR=nvim visudo</code> and uncomment &quot;%wheel ALL=(ALL) ALL&quot;.</p>
+<blockquote>
+<p>When only the user account has been created, the required privileges must be granted by adding <code>&lt;username&gt; ALL=(ALL) ALL</code> to <code>sudoers.d</code>.</p>
+</blockquote>
+</li>
+</ol>
+<h2>Boot manager</h2>
+<h3>GRUB</h3>
+<ol>
+<li><p><code>pacman -S grub efibootmgr</code>.</p>
+<blockquote>
+<p>When the installation is performed alongside Windows, the package <code>os-prober</code> is installed as well.</p>
+</blockquote>
+</li>
+<li><p>Open the file <code>/etc/default/grub</code>, uncomment the line with &quot;GRUB_DISABLE_OS_PROBER&quot; and set it to &quot;false&quot;.</p>
+<blockquote>
+<p>If the installation is <strong>not</strong> performed alongside Windows, this step may be omitted.</p>
+</blockquote>
+</li>
+<li><p><code>grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck</code>.</p>
+</li>
+<li><p><code>grub-mkconfig -o /boot/grub/grub.cfg</code>.</p>
+</li>
+</ol>
+<p>After completing these steps, exit the chroot environment with <code>exit</code>, unmount all filesystems (<code>umount -a</code> or <code>umount -lR /mnt</code>), and reboot the system with <code>reboot</code>.</p>
+<blockquote>
+<p>The installation medium should be removed before the system restarts.</p>
+</blockquote>
+<h3>systemd-boot (alternative to GRUB)</h3>
+<ol>
+<li><p><code>bootctl install</code>.</p>
+</li>
+<li><p>Configure the loader.</p>
+<p> Edit <code>/boot/loader/loader.conf</code> and replace its content with:</p>
+<pre><code>default  arch.conf
+timeout  3
+console-mode max
+editor   no
+</code></pre>
+</li>
+<li><p><code>blkid -s PARTUUID -o value &lt;root partition&gt;</code>: finding the correct UUID.</p>
+<blockquote>
+<p>This is important for the next step.</p>
+</blockquote>
+</li>
+<li><p>Create Arch Linux entry.</p>
+<p> Create <code>/boot/loader/entries/arch.conf</code>.</p>
+<blockquote>
+<p>Important: determine if the system runs on an Intel or AMD processor to load the correct microcode.</p>
+</blockquote>
+<pre><code>title   Arch Linux
+# Uncomment the line matching your kernel:
+# linux   /vmlinuz-linux
+# linux   /vmlinuz-linux-zen
+# Uncomment the line matching your processor:
+# initrd  /intel-ucode.img
+# initrd  /amd-ucode.img
+# Uncomment the line matching your kernel:
+# initrd  /initramfs-linux.img
+# initrd  /initramfs-linux-zen.img
+options root=PARTUUID=YOUR_ROOT_UUID rw rootfstype=ext4
+</code></pre>
+<blockquote>
+<p>Replace <code>YOUR_ROOT_UUID</code> with the actual alphanumerical string from <code>blkid</code>.</p>
+</blockquote>
+</li>
+</ol>
+<h2>Minimal post installation</h2>
+<h3>Time zone</h3>
+<ol>
+<li><p><code>timedatectl list-timezones</code>: list available time-zone identifiers.</p>
+<blockquote>
+<p>A specific entry may be located with grep, for example: <code>timedatectl list-timezones | grep Bogota</code>.</p>
+</blockquote>
+</li>
+<li><p><code>timedatectl set-timezone &lt;time zone&gt;</code>: the desired time zone is applied (e.g., <code>America/Bogota</code>).</p>
+</li>
+<li><p><code>timedatectl set-ntp true</code>.</p>
+</li>
+</ol>
+<h3>Hostname</h3>
+<p><code>hostnamectl set-hostname &lt;hostname&gt;</code>.</p>
+<h3>GPU drivers</h3>
+<p>For the GPU drivers use <code>pacman -S nvidia nvidia-utils nvidia-settings</code> for Nvidia, <code>mesa libva-mesa-driver</code> for AMD (add <code>vulkan-radeon</code> if you have a modern card) or Intel of GMA 4500 up to Coffee Lake architectures, <code>intel-media-driver</code> for Intel of Broadwell and newer architectures.</p>
+<blockquote>
+<p><code>pacman -S virtualbox-guest-utils</code> for VirtualBox.</p>
+</blockquote>
+<h3>Audio stack</h3>
+<pre><code class="language-bash">pacman -S wireplumber pipewire pipewire-pulse pipewire-alsa pipewire-jack
+</code></pre>
+<h3>AUR helper (yay)</h3>
+<ol>
+<li><p><code>git clone https://aur.archlinux.org/yay-bin.git</code>.</p>
+</li>
+<li><p><code>cd yay-bin</code>.</p>
+</li>
+<li><p><code>makepkg -si</code>.</p>
+</li>
+</ol>
+<h3>Display manager</h3>
+<p><code>pacman -S ly &amp;&amp; systemctl enable ly.service</code>.</p>
+<blockquote>
+<p>The config file is <code>/etc/ly</code>.</p>
+</blockquote>
+<p>A minimal Arch installation has now been completed. The subsequent task involves selecting either a desktop environment or a window manager. Installing any desktop environment should present no difficulties, because the corresponding packages include all components required for a complete user experience.</p>
+
+			</div>
+			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
+		</article>
+	</main>
+	<footer>
+		<p>Created by Brandon</p>
+	</footer>
+</body>
+</html>

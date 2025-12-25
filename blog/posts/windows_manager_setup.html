@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Instructions to set up a minimal desktop, window manager (BSPWM), and useful tools for a lightweight Linux workflow.">
+	<title>Windows manager setup - Brandon's Blog</title>
+
+	<link rel="stylesheet" href="/assets/fonts/fontawesome/all.min.css" />
+	<link rel="stylesheet" href="/css/style.css" />
+	<link rel="stylesheet" href="/css/blog.css" />
+	<link rel="stylesheet" href="/css/post.css" />
+
+	<link rel="icon" href="/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: light)">
+	<link rel="icon" href="/favicon-light.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+</head>
+<body>
+	<header>
+		<nav>
+			<div class="left">
+				<a href="/">Brandon</a>
+			</div>
+			<div class="right">
+				<a href="/">
+					<i class="fa-solid fa-house"></i>
+					<span>home</span>
+				</a>
+				<a href="/blog/" class="active">
+					<i class="fa-solid fa-pen"></i>
+					<span>blog</span>
+				</a>
+				<a href="/#contact">
+					<i class="fa-solid fa-envelope"></i>
+					<span>contact</span>
+				</a>
+			</div>
+		</nav>
+	</header>
+	<main>
+		<article class="post">
+			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
+			<header class="post-header">
+				<div class="post-meta">
+					<span class="date">June 16, 2025</span>
+				</div>
+			</header>
+			<div class="post-content">
+				<h1>Windows manager setup</h1>
+<h2>Minimal desktop environment</h2>
+<p>A minimal KDE Plasma environment may be installed together with the X server and accompanying applications by executing:</p>
+<pre><code class="language-bash">pacman -S xorg plasma-desktop sddm konsole dolphin packagekit-qt5 --needed
+</code></pre>
+<ul>
+<li><p><code>plasma-desktop</code>: supplies the shell, window manager, and fundamental Plasma libraries </p>
+</li>
+<li><p><code>sddm</code> is the preferred display manager for Plasma sessions.</p>
+</li>
+<li><p><code>konsole</code> and <code>dolphin</code> furnish a terminal emulator and file manager, providing a usable baseline without the entire KDE Applications suite.</p>
+</li>
+<li><p><code>packagekit-qt5</code> enables Plasma Discover for optional graphical package management.</p>
+</li>
+</ul>
+<h2>Window manager</h2>
+<p>When a lightweight tiling workflow is preferred, BSPWM together with its supporting utilities can be installed:</p>
+<pre><code class="language-bash">pacman -S xorg picom rofi kitty arandr bspwm sxhkd
+</code></pre>
+<ul>
+<li><p><code>bspwm</code>: a tiling window manager that represents windows as the leaves of a full binary tree.</p>
+</li>
+<li><p><code>sxhkd</code>: is an X daemon that reacts to input events by executing commands.</p>
+</li>
+<li><p><code>picom</code>: is a compositor for X.</p>
+</li>
+<li><p><code>rofi</code>: a window switcher, Application launcher and dmenu replacement.</p>
+</li>
+<li><p><code>kitty</code>: the fast, feature-rich, GPU based terminal emulator.</p>
+</li>
+<li><p><code>arandr</code>: provide a simple visual front end for XRandR. Relative monitor positions are shown graphically and can be changed in a drag-and-drop way.</p>
+</li>
+</ul>
+<h3>Directory preparation</h3>
+<pre><code class="language-bash">mkdir -p ~/.config/{bspwm,sxhkd}
+</code></pre>
+<h3>Seeding default configuration</h3>
+<pre><code class="language-bash">cp /usr/share/doc/bspwm/examples/bspwmrc ~/.config/bspwm/
+cp /usr/share/doc/bspwm/examples/sxhkdrc ~/.config/sxhkd/
+</code></pre>
+<p>The sample <code>bspwmrc</code> and <code>sxhkdrc</code> distributed with the package are copied and may serve as an initial template.</p>
+<h3>Adjusting keybindings</h3>
+<p><code>sxhkdrc</code> is edited to tailor frequently used shortcuts. For example, the terminal and application-launcher bindings can be defined as:</p>
+<pre><code># Open Terminal
+super + Return
+	kitty
+
+# Aplication launcher
+super + @space
+	rofi -modi drun -show drun
+</code></pre>
+<p>The hot-key daemon parses the file on the fly, so changes take effect after reloading the configuration (e.g. by sending <code>pkill -USR1 -x sxhkd</code>).</p>
+<h3>Autostart helpers</h3>
+<p>Appending the following lines at the end of <code>~/.config/bspwm/bspwmrc</code> ensures that compositor, cursor, and other helpers start with the window manager:</p>
+<pre><code>picom -f &amp;
+xsetroot -cursor_name left_ptr
+</code></pre>
+<h3>System reboot</h3>
+<pre><code class="language-bash">reboot now
+</code></pre>
+<p>After reboot, the selected display manager should present a session entry labelled BSPWM, as <code>.desktop</code> files for installed window managers are placed automatically in <code>/usr/share/xsessions/</code>.</p>
+<h3>Display resolution configuration</h3>
+<ol>
+<li><p><code>arandr</code> is launched from the terminal or launcher.</p>
+</li>
+<li><p>Appropriate resolutions and display layouts are selected under &quot;Outputs&quot;.</p>
+</li>
+<li><p>The configuration is saved, e.g. as <code>display.sh</code>, in <code>~/.screenlayout/</code>.</p>
+</li>
+<li><p>Source the script near the top of <code>~/.config/bspwm/bspwmrc</code> (before compositor or panel calls) to ensure the X-randr commands run as soon as the session starts.</p>
+<pre><code>~/.screenlayout/display.sh &amp;
+...
+</code></pre>
+</li>
+</ol>
+<p>ARandR emits a plain xrandr script; marking it executable and invoking it early guarantees that subsequent helpers (e.g., compositors) receive correct geometry information.</p>
+<h3>Activating numlock on bootup</h3>
+<ol>
+<li><p>Install the helper: <code>sudo pacman -S numlockx</code>.</p>
+</li>
+<li><p>Append the command to <code>bspwmrc</code>, directly after the display script so it inherits the same X session.</p>
+<pre><code>numlockx on
+</code></pre>
+</li>
+</ol>
+<p>allows you to start X with NumLock turned on.</p>
+<h3>File manager</h3>
+<pre><code class="language-bash">sudo pacman -S thunar gvfs gvfs-mtp tumbler thunar-volman
+</code></pre>
+<p>Thunar is a modern file manager for the Xfce Desktop Environment.</p>
+<h3>Compressed file manager</h3>
+<pre><code class="language-bash">sudo pacman -S p7zip unrar-free zip unzip xarchiver
+</code></pre>
+<p>Xarchiver is the ultimate solution for handling archives on Linux and FreeBSD.
+It is a Desktop Environment independent archiver front end.</p>
+<h3>Text editor</h3>
+<pre><code class="language-bash">sudo pacman -S mousepad
+</code></pre>
+<p>Mousepad aims to be an easy-to-use and fast editor. Our target is an editor for quickly editing text files, not a development environment or an editor with a huge bunch of plugins.</p>
+<h3>Image viewer</h3>
+<pre><code class="language-bash">sudo pacman -S nsxiv
+</code></pre>
+<p>nsxiv is a fork of the now-unmaintained sxiv with the purpose of being a (mostly) drop-in replacement for sxiv, maintaining its interface and adding simple, sensible features.</p>
+<h3>Video player</h3>
+<pre><code class="language-bash">sudo pacman -S mpv
+</code></pre>
+<p>mpv is a free (as in freedom) media player for the command line. It supports a wide variety of media file formats, audio and video codecs, and subtitle types.</p>
+<h3>Volume control</h3>
+<pre><code class="language-bash">sudo pacman -S pavucontrol
+</code></pre>
+<p>A simple GTK based volume control tool (&quot;mixer&quot;) for the PulseAudio sound server.</p>
+<h3>Document viewer</h3>
+<pre><code class="language-bash">sudo pacman -S zathura
+</code></pre>
+<p>zathura is a highly customizable and functional document viewer. It provides a minimalistic and space saving interface as well as an easy usage that mainly focuses on keyboard interaction.</p>
+<h3>Screenshooter</h3>
+<pre><code class="language-bash">sudo pacman -S xfce4-screenshooter
+</code></pre>
+<p><code>xfce4-screenshooter</code> is an application that can be used to take snapshots of your desktop screen.</p>
+<h3>Notification</h3>
+<pre><code class="language-bash">sudo pacman -S dunst
+</code></pre>
+<p>dunst is a lightweight replacement for the notification daemons provided by most desktop environments.</p>
+<h3>Installing a font</h3>
+<ol>
+<li><p>Download the preferred <a href="https://github.com/ryanoasis/nerd-fonts/releases">Nerd Font release</a> (e.g., CascadiaCode).</p>
+</li>
+<li><p>Extract the files to <code>~/.local/share/fonts/</code>.</p>
+</li>
+<li><p>Refresh the cache: <code>fc-cache</code>.</p>
+</li>
+</ol>
+<hr>
+<p>The procedures above install BSPWM and its auxiliaries on a minimal Arch Linux base, create the requisite configuration hierarchy, seed default scripts, and automate common helpers. Upon completion, a functional tiling environment is provided, ready for further personalization through additional rules, theming, and status-bar integration.</p>
+
+			</div>
+			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
+		</article>
+	</main>
+	<footer>
+		<p>Created by Brandon</p>
+	</footer>
+</body>
+</html>

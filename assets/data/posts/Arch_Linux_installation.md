@@ -1,5 +1,5 @@
 ---
-date: "2025-06-15"
+date: "2025-12-25"
 title: "Arch Linux Installation"
 excerpt: "A practical, step-by-step guide to install Arch Linux from a blank drive to a clean, bootable system."
 tags:
@@ -10,13 +10,39 @@ tags:
 
 # Arch Linux installation
 
-For those who have contemplated installing the reputedly “dreaded” Arch Linux but have been discouraged by its perceived difficulty, the present guide offers a practical, step-by-step path from a blank drive to a clean, bootable system.
+For those who have contemplated installing the reputedly "dreaded" Arch Linux but have been discouraged by its perceived difficulty, the present guide offers a practical, step-by-step path from a blank drive to a clean, bootable system.
 
 > Reading the entire document before executing commands is strongly encouraged.
 
-> WARNING: The information herein should be verified whenever possible, as certain steps may evolve over time. Every effort will be made to keep the guide current.
+> WARNING: the information herein should be verified whenever possible, as certain steps may evolve over time. Every effort will be made to keep the guide current.
 
 ## Preinstallation considerations
+
+### Fast startup consideration
+
+Fast startup is a Windows feature that reduces boot time by not completely shutting down the computer. Instead, it saves the system state (kernel and drivers) to a hibernation file (`hiberfil.sys`) and puts the drive into a "read-only" locked state.
+
+#### Why does it matters for dual-boot?
+
+If Fast Startup is enabled, Windows does not fully release its hold on your hard drives when you shut down. This causes two major problems when you boot into Linux:
+
+1. Read-only Partitions: Linux will refuse to mount your Windows partitions with write access to prevent data corruption. You will see errors like "The NTFS partition is in an unsafe state".
+
+2. WiFi/Bluetooth issues: sometimes Windows locks hardware drivers (like the WiFi card) in a specific state, making them fail to initialize correctly when you subsequently boot into Linux.
+
+#### How to disable it
+
+1.  Boot into Windows.
+
+2.  Open **Control Panel** > **Hardware and Sound** > **Power Options**.
+
+3.  Click on **"Choose what the power buttons do"**.
+
+4.  Click the shield icon that says **"Change settings that are currently unavailable"** (requires Admin rights).
+
+5.  Under "Shutdown settings", **uncheck** the box **"Turn on fast startup (recommended)"**.
+
+6.  Click **Save changes** and fully restart your computer
 
 ### Real time clock alignment for dual boot systems
 
@@ -82,15 +108,15 @@ A wired connection simplifies installation.
 
 ### Target layout
 
-| partition |  suggested size  |   filesystem  | purpose                        |
-|:---------:|:--------------------:|:---------------:| ------------------------------------------------------ |
-|  `/efi`   |     500 MiB    |    FAT32    | holds bootloaders and NVRAM entries for UEFI firmware. |
-|  `root`   | $\geq 40 \text{GiB}$ |    ext4     | operating system files.                |
-|  `/home`  |   remaining space  | ext4 (optional) | user data.                       |
+| partition |    suggested size    |   filesystem    | purpose                                                |
+|:---------:|:--------------------:|:---------------:|:------------------------------------------------------ |
+|  `/efi`   |       500 MiB        |      FAT32      | holds bootloaders and NVRAM entries for UEFI firmware. |
+|  `root`   | $\geq 40 \text{GiB}$ |      ext4       | operating system files.                                |
+|  `/home`  |   remaining space    | ext4 (optional) | user data.                                             |
 
 ### Creating partitions with `fdisk`
 
-1. `fdisk -l`: list all disk.
+1. `fdisk -l`: list all disks.
 
 2. `fdisk /dev/<device>`.
 
@@ -99,11 +125,11 @@ A wired connection simplifies installation.
 4. Create the `EFI`.
 
 	```
-	n     # New partition
-	1     # Partition number
+	n       # New partition
+	1       # Partition number
 	<ENTER> # Accept default first sector
 	+500M
-	t 1   # Change type
+	t 1     # Change type
 	```
 
 5. Create the `/`.
@@ -111,8 +137,8 @@ A wired connection simplifies installation.
 	```
 	n
 	2
-	   # Accept default first sector
-	+50G # Or preferred size
+	     # Accept default first sector
+	+50G # Size
 	```
 
 6. Create `/home`.
@@ -131,7 +157,7 @@ A wired connection simplifies installation.
 
 1. `mkfs.fat -F32 /dev/<EFI>`.
 
-2. `mkfs.ext4 /dev/<root`.
+2. `mkfs.ext4 /dev/<root>`.
 
 3. `mkfs.ext4 /dev/<home>`.
 
@@ -139,9 +165,9 @@ A wired connection simplifies installation.
 
 1. `mount /dev/<root> /mnt`.
 
-2. `mkdir -p /mnt/boot/EFI`.
+2. `mkdir -p /mnt/boot`.
 
-3. `mount /dev/<EFI> /mnt/boot/EFI`.
+3. `mount /dev/<EFI> /mnt/boot`.
 
 4. `mkdir /mnt/home`.
 
@@ -181,9 +207,17 @@ UUID=64A6257CA625503A /home/braz/files ntfs-3g auto,exec,users,uid=1000,gid=1000
 
 1. `pacstrap -i /mnt base base-devel linux linux-headers linux-firmware git sudo networkmanager`.
 
+	Another kernel can be installed instead (like the Zen one) or even have more than one. This is useful if one breaks (which rarely happens). The packages for the Zen kernel are `linux-zen` and `linux-zen-headers`.
+
+	> Depending on the configuration you have chosen (Linux, Zen, or both kernels), the settings in the "boot manager" section for systemd-boot may change.
+
 2. `arch-chroot /mnt`.
 
 3. Enable `networkmanager`: `systemctl enable NetworkManager`.
+
+## Microcode
+
+`pacman -S amd-ucode` for AMD processors or `intel-ucode` for Intel processors.
 
 ## Locales and console
 
@@ -195,25 +229,27 @@ UUID=64A6257CA625503A /home/braz/files ntfs-3g auto,exec,users,uid=1000,gid=1000
 
 ## User accounts
 
-8. `passwd`: set the root password.
+1. `passwd`: set the root password.
 
-9. `useradd -m -g users -G wheel <username>`.
+2. `useradd -m -g users -G wheel <username>`.
 
 	> In certain administrative scenarios, an account may be created without assignment to any supplementary groups (`useradd -m <username>`); however, separate configuration within `/etc/sudoers.d` is required to grant the necessary privileges.
 
-10. `passwd <username>`.
+3. `passwd <username>`.
 
-11. `EDITOR=nvim visudo` and uncomment "%wheel ALL=(ALL) ALL".
+4. `EDITOR=nvim visudo` and uncomment "%wheel ALL=(ALL) ALL".
 
 	> When only the user account has been created, the required privileges must be granted by adding `<username> ALL=(ALL) ALL` to `sudoers.d`.
 
-## GRUB
+## Boot manager
+
+### GRUB
 
 1. `pacman -S grub efibootmgr`.
 
 	> When the installation is performed alongside Windows, the package `os-prober` is installed as well.
 
-2. The file `/etc/default/grub` is opened, and the line with "GRUB_DISABLE_OS_PROBER" is uncommented.
+2. Open the file `/etc/default/grub`, uncomment the line with "GRUB_DISABLE_OS_PROBER" and set it to "false".
 
 	> If the installation is **not** performed alongside Windows, this step may be omitted.
 
@@ -221,9 +257,50 @@ UUID=64A6257CA625503A /home/braz/files ntfs-3g auto,exec,users,uid=1000,gid=1000
 
 4. `grub-mkconfig -o /boot/grub/grub.cfg`.
 
-After completing these steps, the chroot environment is exited, all filesystems are unmounted (`umount -a` or `umount -lR /mnt`), and the system is rebooted with `reboot`.
+After completing these steps, exit the chroot environment with `exit`, unmount all filesystems (`umount -a` or `umount -lR /mnt`), and reboot the system with `reboot`.
 
 > The installation medium should be removed before the system restarts.
+
+### systemd-boot (alternative to GRUB)
+
+1. `bootctl install`.
+
+2. Configure the loader.
+
+	Edit `/boot/loader/loader.conf` and replace its content with:
+
+	```
+	default  arch.conf
+	timeout  3
+	console-mode max
+	editor   no
+	```
+
+3. `blkid -s PARTUUID -o value <root partition>`: finding the correct PARTUUID.
+
+	> This is important for the next step.
+
+4. Create Arch Linux entry.
+
+	Create `/boot/loader/entries/arch.conf`.
+
+	> Important: determine if the system runs on an Intel or AMD processor to load the correct microcode.
+
+	```
+	title   Arch Linux
+	# Uncomment the line matching your kernel:
+	# linux   /vmlinuz-linux
+	# linux   /vmlinuz-linux-zen
+	# Uncomment the line matching your processor:
+	# initrd  /intel-ucode.img
+	# initrd  /amd-ucode.img
+	# Uncomment the line matching your kernel:
+	# initrd  /initramfs-linux.img
+	# initrd  /initramfs-linux-zen.img
+	options root=PARTUUID=YOUR_ROOT_PARTUUID rw
+	```
+
+	> Replace `YOUR_ROOT_PARTUUID` with the actual alphanumerical string from `blkid`.
 
 ## Minimal post installation
 
@@ -231,7 +308,7 @@ After completing these steps, the chroot environment is exited, all filesystems 
 
 1. `timedatectl list-timezones`: list available time-zone identifiers.
 
-> 	> A specific entry may be located with grep, for example: `timedatectl list-timezones | grep Bogota`.
+	> A specific entry may be located with grep, for example: `timedatectl list-timezones | grep Bogota`.
 
 2. `timedatectl set-timezone <time zone>`: the desired time zone is applied (e.g., `America/Bogota`).
 
@@ -241,19 +318,39 @@ After completing these steps, the chroot environment is exited, all filesystems 
 
 `hostnamectl set-hostname <hostname>`.
 
-### Microcode and GPU drivers
+### GPU drivers
 
-1. `pacman -S amd-ucode` for AMD processors or `intel-ucode` for Intel processors.
+For the GPU drivers use `pacman -S nvidia nvidia-utils nvidia-settings` for Nvidia, `mesa libva-mesa-driver` for AMD (add `vulkan-radeon` if you have a modern card) or Intel of GMA 4500 up to Coffee Lake architectures, `intel-media-driver` for Intel of Broadwell and newer architectures.
 
-2. For the GPU drivers use `pacman -S nvidia nvidia-utils nvidia-settings` for Nvidia, `mesa libva-mesa-driver` for AMD or Intel of GMA 4500 up to Coffee Lake architectures, `intel-media-driver` for Intel of Broadwell and newer architectures.
-
-	> `pacman -S virtualbox-guest-utils` for VirtualBox.
+> `pacman -S virtualbox-guest-utils` for VirtualBox.
 
 ### Audio stack
 
-```bash
-pacman -S wireplumber pipewire pipewire-pulse pipewire-alsa pipewire-jack
-```
+1. `pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber`.
+
+	- `pipewire`: the core PipeWire daemon (audio/video routing engine that replaces PulseAudio/JACK in modern Linux setups).
+
+	- `pipewire-alsa`: ALSA compatibility layer so apps that output via ALSA can route audio through PipeWire.
+
+	- `pipewire-pulse`: PulseAudio compatibility server so PulseAudio apps (most desktop apps) work transparently with PipeWire.
+
+	- `pipewire-jack`: JACK compatibility layer so pro-audio/JACK apps can work with PipeWire without a separate JACK server.
+
+	- `wireplumber`: the PipeWire session/policy manager (handles automatic device routing, default devices, Bluetooth profile switching, etc.).
+
+2. `systemctl --user enable --now pipewire pipewire-pulse wireplumber`.
+
+### Bluetooth
+
+1. `pacman -S bluez bluez-utils blueman`.
+
+	- `bluez`: the Linux Bluetooth protocol stack (the core system component for Bluetooth).
+
+	- `bluez-utils`: user-space tools like `bluetoothctl` and utilities needed to manage devices/pairing.
+
+	- `blueman`: a GTK Bluetooth manager (tray app + GUI) that makes pairing and switching devices easier.
+
+2. `systemctl enable bluetooth.service`.
 
 ### AUR helper (yay)
 
@@ -265,8 +362,12 @@ pacman -S wireplumber pipewire pipewire-pulse pipewire-alsa pipewire-jack
 
 ### Display manager
 
-`pacman -S ly && systemctl enable ly.service`.
+1. `pacman -S ly`.
 
-> The config file is `/etc/ly`.
+2. `systemctl disable getty@tty2.service`.
+
+3. `systemctl enable ly@tty2.service`.
+
+> The config file is `/etc/ly/config.ini`.
 
 A minimal Arch installation has now been completed. The subsequent task involves selecting either a desktop environment or a window manager. Installing any desktop environment should present no difficulties, because the corresponding packages include all components required for a complete user experience.
