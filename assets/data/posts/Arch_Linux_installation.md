@@ -211,6 +211,8 @@ UUID=64A6257CA625503A /home/braz/files ntfs-3g auto,exec,users,uid=1000,gid=1000
 
 	> Depending on the configuration you have chosen (Linux, Zen, or both kernels), the settings in the "boot manager" section for systemd-boot may change.
 
+	> Also install `network-manager-applet` if you are going to use WiFi.
+
 2. `arch-chroot /mnt`.
 
 3. Enable `networkmanager`: `systemctl enable NetworkManager`.
@@ -369,5 +371,31 @@ For the GPU drivers use `pacman -S nvidia nvidia-utils nvidia-settings` for Nvid
 3. `systemctl enable ly@tty2.service`.
 
 > The config file is `/etc/ly/config.ini`.
+
+## OS keyring
+
+In a full Desktop Environment like GNOME or KDE, a "keyring" (a secure vault for passwords and credentials) is set up automatically. However, in a minimal setup (like Hyprland, Sway, or i3), this bridge is missing. Without it, applications like VS Code, Git, or web browsers will ask for your credentials every single time you open them.
+
+We use `gnome-keyring` to act as this vault and integrate it with the login process so it unlocks automatically when you enter your system password.
+
+1. Install the keyring and a GUI manager (`seahorse`) to inspect keys later if needed: `pacman -S gnome-keyring seahorse`.
+
+2. Configure PAM to unlock the keyring on login. Since we are using `ly`, edit `/etc/pam.d/ly`::
+
+	```
+	#%PAM-1.0
+	.
+	.
+	.
+	# Add this line AFTER "auth include system-login"
+	auth    optional pam_gnome_keyring.so
+	.
+	.
+	.
+	# Add this line at the END of the session section
+	session optional pam_gnome_keyring.so auto_start
+	```
+
+3. Finally, ensure the daemon starts with your window manager: `gnome-keyring-daemon --start --components=secrets`.
 
 A minimal Arch installation has now been completed. The subsequent task involves selecting either a desktop environment or a window manager. Installing any desktop environment should present no difficulties, because the corresponding packages include all components required for a complete user experience.
