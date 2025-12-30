@@ -46,7 +46,7 @@
 			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
 			<header class="post-header">
 				<div class="post-meta">
-					<span class="date">December 2, 2025</span>
+					<span class="date">December 25, 2025</span>
 				</div>
 			</header>
 			<div class="post-content">
@@ -59,6 +59,31 @@
 <p>WARNING: the information herein should be verified whenever possible, as certain steps may evolve over time. Every effort will be made to keep the guide current.</p>
 </blockquote>
 <h2>Preinstallation considerations</h2>
+<h3>Fast startup consideration</h3>
+<p>Fast startup is a Windows feature that reduces boot time by not completely shutting down the computer. Instead, it saves the system state (kernel and drivers) to a hibernation file (<code>hiberfil.sys</code>) and puts the drive into a &quot;read-only&quot; locked state.</p>
+<h4>Why does it matters for dual-boot?</h4>
+<p>If Fast Startup is enabled, Windows does not fully release its hold on your hard drives when you shut down. This causes two major problems when you boot into Linux:</p>
+<ol>
+<li><p>Read-only Partitions: Linux will refuse to mount your Windows partitions with write access to prevent data corruption. You will see errors like &quot;The NTFS partition is in an unsafe state&quot;.</p>
+</li>
+<li><p>WiFi/Bluetooth issues: sometimes Windows locks hardware drivers (like the WiFi card) in a specific state, making them fail to initialize correctly when you subsequently boot into Linux.</p>
+</li>
+</ol>
+<h4>How to disable it</h4>
+<ol>
+<li><p>Boot into Windows.</p>
+</li>
+<li><p>Open <strong>Control Panel</strong> &gt; <strong>Hardware and Sound</strong> &gt; <strong>Power Options</strong>.</p>
+</li>
+<li><p>Click on <strong>&quot;Choose what the power buttons do&quot;</strong>.</p>
+</li>
+<li><p>Click the shield icon that says <strong>&quot;Change settings that are currently unavailable&quot;</strong> (requires Admin rights).</p>
+</li>
+<li><p>Under &quot;Shutdown settings&quot;, <strong>uncheck</strong> the box <strong>&quot;Turn on fast startup (recommended)&quot;</strong>.</p>
+</li>
+<li><p>Click <strong>Save changes</strong> and fully restart your computer</p>
+</li>
+</ol>
 <h3>Real time clock alignment for dual boot systems</h3>
 <p>Linux stores the hardware clock in UTC, whereas Windows records local time. To avoid clock drift, on Windows:</p>
 <ol>
@@ -190,9 +215,9 @@ t 1     # Change type
 <ol>
 <li><p><code>mount /dev/&lt;root&gt; /mnt</code>.</p>
 </li>
-<li><p><code>mkdir -p /mnt/boot/EFI</code>.</p>
+<li><p><code>mkdir -p /mnt/boot</code>.</p>
 </li>
-<li><p><code>mount /dev/&lt;EFI&gt; /mnt/boot/</code>.</p>
+<li><p><code>mount /dev/&lt;EFI&gt; /mnt/boot</code>.</p>
 </li>
 <li><p><code>mkdir /mnt/home</code>.</p>
 </li>
@@ -231,6 +256,9 @@ t 1     # Change type
 <p> Another kernel can be installed instead (like the Zen one) or even have more than one. This is useful if one breaks (which rarely happens). The packages for the Zen kernel are <code>linux-zen</code> and <code>linux-zen-headers</code>.</p>
 <blockquote>
 <p>Depending on the configuration you have chosen (Linux, Zen, or both kernels), the settings in the &quot;boot manager&quot; section for systemd-boot may change.</p>
+</blockquote>
+<blockquote>
+<p>Also install <code>network-manager-applet</code> if you are going to use WiFi.</p>
 </blockquote>
 </li>
 <li><p><code>arch-chroot /mnt</code>.</p>
@@ -300,7 +328,7 @@ console-mode max
 editor   no
 </code></pre>
 </li>
-<li><p><code>blkid -s PARTUUID -o value &lt;root partition&gt;</code>: finding the correct UUID.</p>
+<li><p><code>blkid -s PARTUUID -o value &lt;root partition&gt;</code>: finding the correct PARTUUID.</p>
 <blockquote>
 <p>This is important for the next step.</p>
 </blockquote>
@@ -320,10 +348,10 @@ editor   no
 # Uncomment the line matching your kernel:
 # initrd  /initramfs-linux.img
 # initrd  /initramfs-linux-zen.img
-options root=PARTUUID=YOUR_ROOT_UUID rw rootfstype=ext4
+options root=PARTUUID=YOUR_ROOT_PARTUUID rw
 </code></pre>
 <blockquote>
-<p>Replace <code>YOUR_ROOT_UUID</code> with the actual alphanumerical string from <code>blkid</code>.</p>
+<p>Replace <code>YOUR_ROOT_PARTUUID</code> with the actual alphanumerical string from <code>blkid</code>.</p>
 </blockquote>
 </li>
 </ol>
@@ -348,8 +376,39 @@ options root=PARTUUID=YOUR_ROOT_UUID rw rootfstype=ext4
 <p><code>pacman -S virtualbox-guest-utils</code> for VirtualBox.</p>
 </blockquote>
 <h3>Audio stack</h3>
-<pre><code class="language-bash">pacman -S wireplumber pipewire pipewire-pulse pipewire-alsa pipewire-jack
-</code></pre>
+<ol>
+<li><p><code>pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber</code>.</p>
+<ul>
+<li><p><code>pipewire</code>: the core PipeWire daemon (audio/video routing engine that replaces PulseAudio/JACK in modern Linux setups).</p>
+</li>
+<li><p><code>pipewire-alsa</code>: ALSA compatibility layer so apps that output via ALSA can route audio through PipeWire.</p>
+</li>
+<li><p><code>pipewire-pulse</code>: PulseAudio compatibility server so PulseAudio apps (most desktop apps) work transparently with PipeWire.</p>
+</li>
+<li><p><code>pipewire-jack</code>: JACK compatibility layer so pro-audio/JACK apps can work with PipeWire without a separate JACK server.</p>
+</li>
+<li><p><code>wireplumber</code>: the PipeWire session/policy manager (handles automatic device routing, default devices, Bluetooth profile switching, etc.).</p>
+</li>
+</ul>
+</li>
+<li><p><code>systemctl --user enable --now pipewire pipewire-pulse wireplumber</code>.</p>
+</li>
+</ol>
+<h3>Bluetooth</h3>
+<ol>
+<li><p><code>pacman -S bluez bluez-utils blueman</code>.</p>
+<ul>
+<li><p><code>bluez</code>: the Linux Bluetooth protocol stack (the core system component for Bluetooth).</p>
+</li>
+<li><p><code>bluez-utils</code>: user-space tools like <code>bluetoothctl</code> and utilities needed to manage devices/pairing.</p>
+</li>
+<li><p><code>blueman</code>: a GTK Bluetooth manager (tray app + GUI) that makes pairing and switching devices easier.</p>
+</li>
+</ul>
+</li>
+<li><p><code>systemctl enable bluetooth.service</code>.</p>
+</li>
+</ol>
 <h3>AUR helper (yay)</h3>
 <ol>
 <li><p><code>git clone https://aur.archlinux.org/yay-bin.git</code>.</p>
@@ -360,10 +419,40 @@ options root=PARTUUID=YOUR_ROOT_UUID rw rootfstype=ext4
 </li>
 </ol>
 <h3>Display manager</h3>
-<p><code>pacman -S ly &amp;&amp; systemctl enable ly.service</code>.</p>
+<ol>
+<li><p><code>pacman -S ly</code>.</p>
+</li>
+<li><p><code>systemctl disable getty@tty2.service</code>.</p>
+</li>
+<li><p><code>systemctl enable ly@tty2.service</code>.</p>
+</li>
+</ol>
 <blockquote>
-<p>The config file is <code>/etc/ly</code>.</p>
+<p>The config file is <code>/etc/ly/config.ini</code>.</p>
 </blockquote>
+<h2>OS keyring</h2>
+<p>In a full Desktop Environment like GNOME or KDE, a &quot;keyring&quot; (a secure vault for passwords and credentials) is set up automatically. However, in a minimal setup (like Hyprland, Sway, or i3), this bridge is missing. Without it, applications like VS Code, Git, or web browsers will ask for your credentials every single time you open them.</p>
+<p>We use <code>gnome-keyring</code> to act as this vault and integrate it with the login process so it unlocks automatically when you enter your system password.</p>
+<ol>
+<li><p>Install the keyring and a GUI manager (<code>seahorse</code>) to inspect keys later if needed: <code>pacman -S gnome-keyring seahorse</code>.</p>
+</li>
+<li><p>Configure PAM to unlock the keyring on login. Since we are using <code>ly</code>, edit <code>/etc/pam.d/ly</code>::</p>
+<pre><code>#%PAM-1.0
+.
+.
+.
+# Add this line AFTER &quot;auth include system-login&quot;
+auth    optional pam_gnome_keyring.so
+.
+.
+.
+# Add this line at the END of the session section
+session optional pam_gnome_keyring.so auto_start
+</code></pre>
+</li>
+<li><p>Finally, ensure the daemon starts with your window manager: <code>gnome-keyring-daemon --start --components=secrets</code>.</p>
+</li>
+</ol>
 <p>A minimal Arch installation has now been completed. The subsequent task involves selecting either a desktop environment or a window manager. Installing any desktop environment should present no difficulties, because the corresponding packages include all components required for a complete user experience.</p>
 
 			</div>
