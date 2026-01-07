@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			"contact-send": "Enviar",
 
 			// Footer
-			"footer-text": "Creado por Brandon"
+			"footer": "Creado por Brandon"
 		}
 	}
 
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		document.querySelector(".contact-section form button").setAttribute("data-lang", "contact-send")
 
 		// Footer
-		document.querySelector("footer p").setAttribute("data-lang", "footer-text")
+		document.querySelector("footer p").setAttribute("data-lang", "footer")
 	}
 
 	const set_language = (lang) => {
