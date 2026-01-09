@@ -25,14 +25,16 @@ function get_posts() {
 		const content = fs.readFileSync(path.join(POSTS_DIR, file), "utf-8")
 		const { data, content: markdown } = matter(content)
 
+		const slug = path.basename(file, ".md")
+
 		posts.push({
 			title: data.title,
 			date: new Date(data.date),
 			date_str: new Date(data.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
 			tags: data.tags || [],
 			excerpt: data.excerpt,
-			image: data.image || "https://placehold.co/600x400",
-			slug: path.basename(file, ".md"),
+			image: `/assets/images/posts/${slug}.webp`,
+			slug,
 			content: marked.parse(markdown)
 		})
 	})
