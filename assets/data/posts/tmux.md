@@ -68,7 +68,7 @@ All shortcuts assume the default prefix `CTRL + b` (modifiable in configuration)
 
 	> `tmux rename-window <new name>`.
 
-- `<number>`: switch directly to window by number (starting at $0$).
+- `<number>`: switch directly to window by number (starting at 0).
 
 - `&`: close the current window
 

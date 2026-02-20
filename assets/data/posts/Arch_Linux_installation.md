@@ -48,7 +48,7 @@ If Fast Startup is enabled, Windows does not fully release its hold on your hard
 
 Linux stores the hardware clock in UTC, whereas Windows records local time. To avoid clock drift, on Windows:
 
-1. Create `RealTimeIsUniversal` as a `DWORD` of $32$ bits with value $1$ under `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation`.
+1. Create `RealTimeIsUniversal` as a `DWORD` of 32 bits with value 1 under `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation`.
 
 ### SSH setup (remote installation)
 
