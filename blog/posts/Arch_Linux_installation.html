@@ -46,7 +46,7 @@
 			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
 			<header class="post-header">
 				<div class="post-meta">
-					<span class="date">December 24, 2025</span>
+					<span class="date">December 25, 2025</span>
 				</div>
 			</header>
 			<div class="post-content">
@@ -87,7 +87,7 @@
 <h3>Real time clock alignment for dual boot systems</h3>
 <p>Linux stores the hardware clock in UTC, whereas Windows records local time. To avoid clock drift, on Windows:</p>
 <ol>
-<li>Create <code>RealTimeIsUniversal</code> as a <code>DWORD</code> of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>32</mn></mrow><annotation encoding="application/x-tex">32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32</span></span></span></span> bits with value <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> under <code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation</code>.</li>
+<li>Create <code>RealTimeIsUniversal</code> as a <code>DWORD</code> of 32 bits with value 1 under <code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation</code>.</li>
 </ol>
 <h3>SSH setup (remote installation)</h3>
 <p>Configuring OpenSSH in the live environment permits the entire installation to be driven from another computer via a secure shell.</p>
