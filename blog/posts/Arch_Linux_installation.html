@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="A practical, step-by-step guide to install Arch Linux from a blank drive to a clean, bootable system.">
-	<title>Arch Linux Installation - Brandon's Blog</title>
+	<title>Arch Linux installation - Brandon's Blog</title>
 
 	<link rel="stylesheet" href="/assets/fonts/fontawesome/all.min.css" />
 	<link rel="stylesheet" href="/css/style.css" />
@@ -87,7 +87,7 @@
 <h3>Real time clock alignment for dual boot systems</h3>
 <p>Linux stores the hardware clock in UTC, whereas Windows records local time. To avoid clock drift, on Windows:</p>
 <ol>
-<li>Create <code>RealTimeIsUniversal</code> as a <code>DWORD</code> of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>32</mn></mrow><annotation encoding="application/x-tex">32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32</span></span></span></span> bits with value <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> under <code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation</code>.</li>
+<li>Create <code>RealTimeIsUniversal</code> as a <code>DWORD</code> of 32 bits with value 1 under <code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation</code>.</li>
 </ol>
 <h3>SSH setup (remote installation)</h3>
 <p>Configuring OpenSSH in the live environment permits the entire installation to be driven from another computer via a secure shell.</p>
@@ -312,7 +312,7 @@ t 1     # Change type
 <li><p><code>grub-mkconfig -o /boot/grub/grub.cfg</code>.</p>
 </li>
 </ol>
-<p>After completing these steps, exit the chroot environment with <code>exit</code>, unmount all filesystems (<code>umount -a</code> or <code>umount -lR /mnt</code>), and reboot the system with <code>reboot</code>.</p>
+<p>After completing these steps, exit the chroot environment with <code>exit</code>, unmount all filesystems (<code>umount -a</code> or <code>umount -lR /mnt</code>) and reboot the system with <code>reboot</code>.</p>
 <blockquote>
 <p>The installation medium should be removed before the system restarts.</p>
 </blockquote>
@@ -454,6 +454,9 @@ session optional pam_gnome_keyring.so auto_start
 </li>
 </ol>
 <p>A minimal Arch installation has now been completed. The subsequent task involves selecting either a desktop environment or a window manager. Installing any desktop environment should present no difficulties, because the corresponding packages include all components required for a complete user experience.</p>
+<h3>Bonus (a few <code>pacman</code> tweaks)</h3>
+<p>A short <code>pacman</code> configuration section is also available in my <a href="https://br4z.github.io/blog/posts/how_to_install_Arch_Linux_in_WSL.html#configure-pacman-conf">WSL Arch installation guide</a>, covering small quality-of-life improvements such as <code>ILoveCandy</code>, <code>VerbosePkgLists</code> and <code>ParallelDownloads</code>.</p>
+<p>It may be a useful reference for readers who want a slightly nicer package management experience, or for those introducing Arch Linux to someone who is still not ready to commit to the full installation ritual.</p>
 
 			</div>
 			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>

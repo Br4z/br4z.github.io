@@ -3,6 +3,7 @@ import matter from "gray-matter"
 import path from "path"
 
 import { marked } from "marked"
+import customHeadingId from "marked-custom-heading-id"
 import marked_katex from "marked-katex-extension"
 
 const POSTS_DIR = "./assets/data/posts"
@@ -10,6 +11,7 @@ const OUTPUT_FILE = "./blog/index.html"
 const TEMPLATE_FILE = "./blog/template.html"
 
 
+marked.use(customHeadingId())
 // Configure marked to support KaTeX for math rendering
 marked.use(marked_katex({
 	throwOnError: false

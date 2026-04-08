@@ -1,6 +1,6 @@
 ---
 date: "2025-12-25"
-title: "Arch Linux Installation"
+title: "Arch Linux installation"
 excerpt: "A practical, step-by-step guide to install Arch Linux from a blank drive to a clean, bootable system."
 tags:
   - linux
@@ -259,7 +259,7 @@ UUID=64A6257CA625503A /home/braz/files ntfs-3g auto,exec,users,uid=1000,gid=1000
 
 4. `grub-mkconfig -o /boot/grub/grub.cfg`.
 
-After completing these steps, exit the chroot environment with `exit`, unmount all filesystems (`umount -a` or `umount -lR /mnt`), and reboot the system with `reboot`.
+After completing these steps, exit the chroot environment with `exit`, unmount all filesystems (`umount -a` or `umount -lR /mnt`) and reboot the system with `reboot`.
 
 > The installation medium should be removed before the system restarts.
 
@@ -399,3 +399,9 @@ We use `gnome-keyring` to act as this vault and integrate it with the login proc
 3. Finally, ensure the daemon starts with your window manager: `gnome-keyring-daemon --start --components=secrets`.
 
 A minimal Arch installation has now been completed. The subsequent task involves selecting either a desktop environment or a window manager. Installing any desktop environment should present no difficulties, because the corresponding packages include all components required for a complete user experience.
+
+### Bonus (a few `pacman` tweaks)
+
+A short `pacman` configuration section is also available in my [WSL Arch installation guide](https://br4z.github.io/blog/posts/how_to_install_Arch_Linux_in_WSL.html#configure-pacman-conf), covering small quality-of-life improvements such as `ILoveCandy`, `VerbosePkgLists` and `ParallelDownloads`.
+
+It may be a useful reference for readers who want a slightly nicer package management experience, or for those introducing Arch Linux to someone who is still not ready to commit to the full installation ritual.

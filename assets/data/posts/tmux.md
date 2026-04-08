@@ -70,7 +70,7 @@ All shortcuts assume the default prefix `CTRL + b` (modifiable in configuration)
 
 - `<number>`: switch directly to window by number (starting at 0).
 
-- `&`: close the current window
+- `&`: close the current window.
 
 - `%`: split pane vertically.
 
