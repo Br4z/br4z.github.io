@@ -12,7 +12,7 @@ tags:
 
 [A previous post](https://br4z.github.io/blog/posts/Arch_Linux_installation.html) covered the full bare-metal Arch Linux installation. This version takes the shorter route: Arch Linux now provides an official WSL image and Microsoft's current WSL flow installs Linux distributions directly from Windows, with new installs using WSL 2 by default. Complete software liberation has not yet occurred, Windows is still the landlord, but this is still a very respectable first step toward the ceremonial title of **"Arch Linux user"**.
 
-Because this is WSL, the usual bare-metal chores—booting an ISO, partitioning disks, installing a boot loader and generally negotiating with firmware, are not part of the process here. [The earlier guide](https://br4z.github.io/blog/posts/Arch_Linux_installation.html) remains the reference for that full installation path; this one focuses only on the WSL variant.
+Because this is WSL, the usual bare-metal chores like booting an ISO, partitioning disks, installing a boot loader and generally negotiating with firmware, are not part of the process here. [The earlier guide](https://br4z.github.io/blog/posts/Arch_Linux_installation.html) remains the reference for that full installation path; this one focuses only on the WSL variant.
 
 ## What is needed first?
 
@@ -98,6 +98,24 @@ EDITOR=nvim visudo
 
 Inside `visudo`, the line that grants sudo privileges to the `wheel` group should be uncommented.
 
+### Time zone
+
+1. `timedatectl list-timezones`: list available time-zone identifiers.
+
+	> A specific entry may be located with grep, for example: `timedatectl list-timezones | grep Bogota`.
+
+2. `timedatectl set-timezone <time zone>`: the desired time zone is applied (e.g., `America/Bogota`).
+
+3. `timedatectl set-ntp true`.
+
+## Locales and console
+
+1. Uncomment `en_US.UTF-8` in `/etc/locale.gen`, then run `locale-gen`.
+
+2. Create `/etc/locale.conf` containing `LANG=en_US.UTF-8`.
+
+3. Add `KEYMAP=us` in `/etc/vconsole.conf`.
+
 ## Configure `/etc/wsl.conf`
 
 ArchWiki recommends setting the default WSL user in `/etc/wsl.conf` after the account has been created.
@@ -181,6 +199,6 @@ This keeps `pacman` readable, enables concurrent downloads and adds a quick disk
 
 ---
 
-That is the whole process. No USB installer was needed and no partition table was touched. Windows is still technically in charge, so total freedom remains a future milestone, but an important symbolic threshold has now been crossed: Arch Linux is running, `pacman` is ready, the mirrors are sane and the badge of "Arch Linux user" has been earned—at least provisionally.
+That is the whole process. No USB installer was needed and no partition table was touched. Windows is still technically in charge, so total freedom remains a future milestone, but an important symbolic threshold has now been crossed: Arch Linux is running, `pacman` is ready, the mirrors are sane and the badge of "Arch Linux user" has been earned, at least provisionally.
 
 For the full native installation path, [the earlier bare-metal guide](https://br4z.github.io/blog/posts/Arch_Linux_installation.html) remains the companion piece to this one.
