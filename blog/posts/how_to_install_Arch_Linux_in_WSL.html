@@ -52,7 +52,7 @@
 			<div class="post-content">
 				<h1>How to install Arch Linux in WSL</h1>
 <p><a href="https://br4z.github.io/blog/posts/Arch_Linux_installation.html">A previous post</a> covered the full bare-metal Arch Linux installation. This version takes the shorter route: Arch Linux now provides an official WSL image and Microsoft&#39;s current WSL flow installs Linux distributions directly from Windows, with new installs using WSL 2 by default. Complete software liberation has not yet occurred, Windows is still the landlord, but this is still a very respectable first step toward the ceremonial title of <strong>&quot;Arch Linux user&quot;</strong>.</p>
-<p>Because this is WSL, the usual bare-metal chores—booting an ISO, partitioning disks, installing a boot loader and generally negotiating with firmware, are not part of the process here. <a href="https://br4z.github.io/blog/posts/Arch_Linux_installation.html">The earlier guide</a> remains the reference for that full installation path; this one focuses only on the WSL variant.</p>
+<p>Because this is WSL, the usual bare-metal chores like booting an ISO, partitioning disks, installing a boot loader and generally negotiating with firmware, are not part of the process here. <a href="https://br4z.github.io/blog/posts/Arch_Linux_installation.html">The earlier guide</a> remains the reference for that full installation path; this one focuses only on the WSL variant.</p>
 <h2>What is needed first?</h2>
 <p>Install WSL with the following command:</p>
 <pre><code class="language-ps1">wsl --install
@@ -103,6 +103,27 @@ passwd &lt;username&gt;
 EDITOR=nvim visudo
 </code></pre>
 <p>Inside <code>visudo</code>, the line that grants sudo privileges to the <code>wheel</code> group should be uncommented.</p>
+<h3>Time zone</h3>
+<ol>
+<li><p><code>timedatectl list-timezones</code>: list available time-zone identifiers.</p>
+<blockquote>
+<p>A specific entry may be located with grep, for example: <code>timedatectl list-timezones | grep Bogota</code>.</p>
+</blockquote>
+</li>
+<li><p><code>timedatectl set-timezone &lt;time zone&gt;</code>: the desired time zone is applied (e.g., <code>America/Bogota</code>).</p>
+</li>
+<li><p><code>timedatectl set-ntp true</code>.</p>
+</li>
+</ol>
+<h2>Locales and console</h2>
+<ol>
+<li><p>Uncomment <code>en_US.UTF-8</code> in <code>/etc/locale.gen</code>, then run <code>locale-gen</code>.</p>
+</li>
+<li><p>Create <code>/etc/locale.conf</code> containing <code>LANG=en_US.UTF-8</code>.</p>
+</li>
+<li><p>Add <code>KEYMAP=us</code> in <code>/etc/vconsole.conf</code>.</p>
+</li>
+</ol>
 <h2>Configure <code>/etc/wsl.conf</code></h2>
 <p>ArchWiki recommends setting the default WSL user in <code>/etc/wsl.conf</code> after the account has been created.</p>
 <p>A minimal wsl.conf for that purpose looks like this:</p>
@@ -155,7 +176,7 @@ CheckSpace
 </code></pre>
 <p>This keeps <code>pacman</code> readable, enables concurrent downloads and adds a quick disk-space check before installations.</p>
 <hr>
-<p>That is the whole process. No USB installer was needed and no partition table was touched. Windows is still technically in charge, so total freedom remains a future milestone, but an important symbolic threshold has now been crossed: Arch Linux is running, <code>pacman</code> is ready, the mirrors are sane and the badge of &quot;Arch Linux user&quot; has been earned—at least provisionally.</p>
+<p>That is the whole process. No USB installer was needed and no partition table was touched. Windows is still technically in charge, so total freedom remains a future milestone, but an important symbolic threshold has now been crossed: Arch Linux is running, <code>pacman</code> is ready, the mirrors are sane and the badge of &quot;Arch Linux user&quot; has been earned, at least provisionally.</p>
 <p>For the full native installation path, <a href="https://br4z.github.io/blog/posts/Arch_Linux_installation.html">the earlier bare-metal guide</a> remains the companion piece to this one.</p>
 
 			</div>
