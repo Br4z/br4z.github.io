@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -46,12 +46,12 @@
 			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
 			<header class="post-header">
 				<div class="post-meta">
-					<span class="date">January 7, 2026</span>
+					<span class="date">January 6, 2026</span>
 				</div>
 			</header>
 			<div class="post-content">
 				<h1>Hyprland setup</h1>
-<p>This guide builds upon the foundation established in my <a href="https://br4z.github.io/blog/posts/Arch_Linux_installation.html">&quot;Arch Linux installation&quot;</a> post. Assuming you have completed those steps, you should now have a clean base system. Below, we will cover the essential packages required to transform that minimal base into a fully functional Hyprland desktop environment.</p>
+<p>This guide builds upon the foundation established in my <a href="https:///blog/posts/Arch_Linux_installation.html">&quot;Arch Linux installation&quot;</a> post. Assuming you have completed those steps, you should now have a clean base system. Below, we will cover the essential packages required to transform that minimal base into a fully functional Hyprland desktop environment.</p>
 <blockquote>
 <p>Disclaimer: software packages update frequently, which may alter the configuration process. I aim to maintain the accuracy of this guide, similar to my previous Arch Linux post.</p>
 </blockquote>
@@ -98,7 +98,7 @@
 <li><p><a href="https://github.com/hyprwm/hypridle/blob/main/assets/example.conf">Example configuration file</a>.</p>
 </li>
 <li><p>Configuration file: <code>~/.config/hypr/hypridle.conf</code>.</p>
-<pre><code>general {
+<pre><code class="language-ini">general {
     lock_cmd = pidof hyprlock || hyprlock
     before_sleep_cmd = loginctl lock-session   # Lock before suspend.
     after_sleep_cmd = hyprctl dispatch dpms on
@@ -155,7 +155,7 @@ listener {
 <li><p><a href="https://github.com/emersion/mako/wiki/Example-configuration">Example configuration file</a>.</p>
 </li>
 <li><p>Configuration file: <code>~/.config/mako/config</code>.</p>
-<pre><code>sort=-time
+<pre><code class="language-ini">sort=-time
 layer=overlay
 background-color=#1C1C1C
 width=300
@@ -187,8 +187,7 @@ group-by=category
 </ul>
 <h2>Screenshot</h2>
 <ul>
-<li><p>Packages:</p>
-<ul>
+<li>Packages:<ul>
 <li><p><code>grim</code>: grab images from a Wayland compositor (the actual screenshot tool).</p>
 </li>
 <li><p><code>slurp</code>: select a region in a Wayland compositor (provides the geometry for grim).</p>
@@ -196,7 +195,7 @@ group-by=category
 <li><p><code>swappy</code>: a Wayland-native snapshot editing tool (for drawing arrows, blurring text, etc.).</p>
 <ul>
 <li><p>Configuration file: <code>~/.config/swappy/config</code>.</p>
-<pre><code>[Default]
+<pre><code class="language-ini">[Default]
 save_dir=$HOME/pictures/screenshots
 save_filename_format=swappy-%Y%m%d-%H%M%S.png
 show_panel=true
@@ -217,7 +216,7 @@ fill_shape=false
 </li>
 </ul>
 <p>I use the following keybindings in my hyprland.conf to chain these tools together:</p>
-<pre><code># Capture region -&gt; edit -&gt; save/copy
+<pre><code class="language-ini"># Capture region -&gt; edit -&gt; save/copy
 bind = $mainMod SHIFT, S, exec, grim -g &quot;$(slurp)&quot; - | swappy -f -
 
 # Capture full screen -&gt; edit -&gt; save/copy
@@ -236,7 +235,7 @@ bind = $mainMod, Print, exec, grim -g &quot;$(slurp)&quot; - | wl-copy &amp;&amp
 <li><p><a href="https://wiki.hypr.land/Hypr-Ecosystem/hyprpaper">Documentation</a>.</p>
 </li>
 <li><p>Configuration file: <code>~/.config/hypr/hyprpaper.conf</code>.</p>
-<pre><code>wallpaper {
+<pre><code class="language-ini">wallpaper {
     monitor = DP-3
     path = /mnt/files/pictures/wallpapers/Cailee_Spaeny.jpg
     fit_mode = cover
@@ -318,8 +317,7 @@ bind = $mainMod, Print, exec, grim -g &quot;$(slurp)&quot; - | wl-copy &amp;&amp
 </ul>
 <h3>File explorer</h3>
 <ul>
-<li><p>Packages:</p>
-<ul>
+<li>Packages:<ul>
 <li><p><code>thunar</code>: main package.</p>
 </li>
 <li><p><code>thunar-volman</code>: manages automatic mounting of removable devices.</p>

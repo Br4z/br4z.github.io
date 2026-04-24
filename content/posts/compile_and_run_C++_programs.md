@@ -3,9 +3,9 @@ date: "2025-06-11"
 title: "Compile and run C++ programs"
 excerpt: "Guide to compile and run C++ programs on Windows and Linux using GCC and other tools."
 tags:
-  - c++
-  - programming
-  - compilers
+    - c++
+    - programming
+    - compilers
 ---
 
 # Compile and run C++ programs
@@ -16,13 +16,13 @@ Both Windows and Linux environments will utilize the GCC compilers provided by t
 
 - Windows.
 
-	The development kit [**w64devkit**](https://github.com/skeeto/w64devkit/releases) (via MinGW-w64) is employed.
+    The development kit [**w64devkit**](https://github.com/skeeto/w64devkit/releases) (via MinGW-w64) is employed.
 
-	> Download the ZIP file named `w64devkit-<version>.zip`.
+    > Download the ZIP file named `w64devkit-<version>.zip`.
 
 - Linux.
 
-	Most distributions include GCC by default. If unavailable, install the "gcc" package using the system's package manager.
+    Most distributions include GCC by default. If unavailable, install the "gcc" package using the system's package manager.
 
 ## Setup on Windows
 
@@ -48,8 +48,8 @@ The **Code Runner** extension for VS Code is recommended. Configuration entries 
 
 ```json
 "code-runner.executorMap": {
-		"cpp": "echo Executing... && cd $dir && g++ \"$fileName\" -o main && .\\main.exe && rm .\\main.exe"
-	}
+        "cpp": "echo Executing... && cd $dir && g++ \"$fileName\" -o main && .\\main.exe && rm .\\main.exe"
+    }
 ```
 
 - `echo Executing...`: displays a status message.

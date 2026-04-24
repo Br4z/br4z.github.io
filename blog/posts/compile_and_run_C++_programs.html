@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -46,7 +46,7 @@
 			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
 			<header class="post-header">
 				<div class="post-meta">
-					<span class="date">June 11, 2025</span>
+					<span class="date">June 10, 2025</span>
 				</div>
 			</header>
 			<div class="post-content">
@@ -79,15 +79,15 @@
 <p>Alternatively, you could run <code>setx /m PATH &quot;...\w64devkit\bin;%PATH%&quot;</code>.</p>
 </blockquote>
 <h2>Running programs</h2>
-<p>The <strong>Code Runner</strong> extension for Visual Studio Code is recommended. Configuration entries in the <code>settings.json</code> file follow.</p>
+<p>The <strong>Code Runner</strong> extension for VS Code is recommended. Configuration entries in the <code>settings.json</code> file follow.</p>
 <blockquote>
 <p>For non-VS Code environments, equivalent shell commands are provided.</p>
 </blockquote>
 <h3>Windows</h3>
 <h4>Single file (Windows)</h4>
 <pre><code class="language-json">&quot;code-runner.executorMap&quot;: {
-		&quot;cpp&quot;: &quot;echo Executing... &amp;&amp; cd $dir &amp;&amp; g++ \&quot;$fileName\&quot; -o main &amp;&amp; .\\main.exe &amp;&amp; rm .\\main.exe&quot;
-	}
+        &quot;cpp&quot;: &quot;echo Executing... &amp;&amp; cd $dir &amp;&amp; g++ \&quot;$fileName\&quot; -o main &amp;&amp; .\\main.exe &amp;&amp; rm .\\main.exe&quot;
+    }
 </code></pre>
 <ul>
 <li><p><code>echo Executing...</code>: displays a status message.</p>

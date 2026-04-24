@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -46,7 +46,7 @@
 			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
 			<header class="post-header">
 				<div class="post-meta">
-					<span class="date">December 25, 2025</span>
+					<span class="date">December 24, 2025</span>
 				</div>
 			</header>
 			<div class="post-content">
@@ -127,7 +127,7 @@
 <li><p>Confirm the adapter appears with <code>device list</code>; troubleshoot via the <a href="https://wiki.archlinux.org/title/iwd">Arch Wiki</a> if absent.</p>
 </li>
 <li><p>Scan and enumerate networks.</p>
-<pre><code>station &lt;device&gt; scan
+<pre><code class="language-text">station &lt;device&gt; scan
 station &lt;device&gt; get-networks
 station &lt;device&gt; connect &quot;&lt;SSID&gt;&quot;
 </code></pre>
@@ -176,7 +176,7 @@ station &lt;device&gt; connect &quot;&lt;SSID&gt;&quot;
 <li><p><code>g</code>: initialize a GPT table.</p>
 </li>
 <li><p>Create the <code>EFI</code>.</p>
-<pre><code>n       # New partition
+<pre><code class="language-text">n       # New partition
 1       # Partition number
 &lt;ENTER&gt; # Accept default first sector
 +500M
@@ -184,14 +184,14 @@ t 1     # Change type
 </code></pre>
 </li>
 <li><p>Create the <code>/</code>.</p>
-<pre><code>n
+<pre><code class="language-text">n
 2
      # Accept default first sector
 +50G # Size
 </code></pre>
 </li>
 <li><p>Create <code>/home</code>.</p>
-<pre><code>n
+<pre><code class="language-text">n
 3
   # Accept defaults to use remaining space
 </code></pre>
@@ -248,7 +248,7 @@ t 1     # Change type
 <p>After mounting, the filesystem table must be regenerated.</p>
 </blockquote>
 <p>The following entry illustrates a typical NTFS partition configuration in <code>/etc/fstab</code>:</p>
-<pre><code>UUID=64A6257CA625503A /home/braz/files ntfs-3g auto,exec,users,uid=1000,gid=1000,noatime 0 2
+<pre><code class="language-text">UUID=64A6257CA625503A /home/braz/files ntfs-3g auto,exec,users,uid=1000,gid=1000,noatime 0 2
 </code></pre>
 <h2>Base system installation</h2>
 <ol>
@@ -322,7 +322,7 @@ t 1     # Change type
 </li>
 <li><p>Configure the loader.</p>
 <p> Edit <code>/boot/loader/loader.conf</code> and replace its content with:</p>
-<pre><code>default  arch.conf
+<pre><code class="language-ini">default  arch.conf
 timeout  3
 console-mode max
 editor   no
@@ -338,7 +338,7 @@ editor   no
 <blockquote>
 <p>Important: determine if the system runs on an Intel or AMD processor to load the correct microcode.</p>
 </blockquote>
-<pre><code>title   Arch Linux
+<pre><code class="language-ini">title   Arch Linux
 # Uncomment the line matching your kernel:
 # linux   /vmlinuz-linux
 # linux   /vmlinuz-linux-zen
@@ -437,7 +437,7 @@ options root=PARTUUID=YOUR_ROOT_PARTUUID rw
 <li><p>Install the keyring and a GUI manager (<code>seahorse</code>) to inspect keys later if needed: <code>pacman -S gnome-keyring seahorse</code>.</p>
 </li>
 <li><p>Configure PAM to unlock the keyring on login. Since we are using <code>ly</code>, edit <code>/etc/pam.d/ly</code>::</p>
-<pre><code>#%PAM-1.0
+<pre><code class="language-text">#%PAM-1.0
 .
 .
 .
@@ -455,7 +455,7 @@ session optional pam_gnome_keyring.so auto_start
 </ol>
 <p>A minimal Arch installation has now been completed. The subsequent task involves selecting either a desktop environment or a window manager. Installing any desktop environment should present no difficulties, because the corresponding packages include all components required for a complete user experience.</p>
 <h3>Bonus (a few <code>pacman</code> tweaks)</h3>
-<p>A short <code>pacman</code> configuration section is also available in my <a href="https://br4z.github.io/blog/posts/how_to_install_Arch_Linux_in_WSL.html#configure-pacman-conf">WSL Arch installation guide</a>, covering small quality-of-life improvements such as <code>ILoveCandy</code>, <code>VerbosePkgLists</code> and <code>ParallelDownloads</code>.</p>
+<p>A short <code>pacman</code> configuration section is also available in my <a href="https:///blog/posts/how_to_install_Arch_Linux_in_WSL.html#configure-pacman-conf">WSL Arch installation guide</a>, covering small quality-of-life improvements such as <code>ILoveCandy</code>, <code>VerbosePkgLists</code> and <code>ParallelDownloads</code>.</p>
 <p>It may be a useful reference for readers who want a slightly nicer package management experience, or for those introducing Arch Linux to someone who is still not ready to commit to the full installation ritual.</p>
 
 			</div>

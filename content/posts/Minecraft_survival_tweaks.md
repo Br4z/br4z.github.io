@@ -3,9 +3,9 @@ date: "2025-06-12"
 title: "Minecraft survival tweaks"
 excerpt: "Mod and configuration recommendations for a smoother, more enjoyable Minecraft survival experience."
 tags:
-  - minecraft
-  - mods
-  - gaming
+    - minecraft
+    - mods
+    - gaming
 ---
 
 # Minecraft survival tweaks
@@ -29,10 +29,9 @@ The [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) is req
 ### Performance optimization
 
 - [Sodium](https://modrinth.com/mod/sodium).
+    - [Sodium extra](https://modrinth.com/mod/sodium-extra).
 
-	- [Sodium extra](https://modrinth.com/mod/sodium-extra).
-
-	- [Reese's Sodium options](https://modrinth.com/mod/reeses-sodium-options).
+    - [Reese's Sodium options](https://modrinth.com/mod/reeses-sodium-options).
 
 - [Phosphor](https://www.curseforge.com/minecraft/mc-mods/phosphor).
 
@@ -59,18 +58,15 @@ The [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) is req
 - [WI zoom](https://www.curseforge.com/minecraft/mc-mods/wi-zoom): advanced zoom functionality.
 
 - [WTHIT](https://www.curseforge.com/minecraft/mc-mods/wthit): displays item/entity information (e.g., health for entities).
-
-	- [bad packets](https://www.curseforge.com/minecraft/mc-mods/badpackets).
+    - [bad packets](https://www.curseforge.com/minecraft/mc-mods/badpackets).
 
 - [Mod Menu](https://modrinth.com/mod/modmenu).
 
 - [Tweakeroo](https://www.curseforge.com/minecraft/mc-mods/tweakeroo): various in‑game tweaks.
-
-	- [Malilib](https://www.curseforge.com/minecraft/mc-mods/malilib).
+    - [Malilib](https://www.curseforge.com/minecraft/mc-mods/malilib).
 
 - [MiniHUD](https://www.curseforge.com/minecraft/mc-mods/minihud).
-
-	- [Malilib](https://www.curseforge.com/minecraft/mc-mods/malilib).
+    - [Malilib](https://www.curseforge.com/minecraft/mc-mods/malilib).
 
 - [Inventory HUD+](https://www.curseforge.com/minecraft/mc-mods/inventory-hud-forge).
 

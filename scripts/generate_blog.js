@@ -1,67 +1,75 @@
-import fs from "fs"
-import matter from "gray-matter"
-import path from "path"
+import fs from "fs";
+import matter from "gray-matter";
+import path from "path";
 
-import { marked } from "marked"
-import customHeadingId from "marked-custom-heading-id"
-import marked_katex from "marked-katex-extension"
+import { marked } from "marked";
+import customHeadingId from "marked-custom-heading-id";
+import markedKatex from "marked-katex-extension";
 
-const POSTS_DIR = "./content/posts"
-const OUTPUT_FILE = "./blog/index.html"
-const TEMPLATE_FILE = "./blog/template.html"
+const POSTS_DIR = "./content/posts";
+const OUTPUT_FILE = "./blog/index.html";
+const TEMPLATE_FILE = "./blog/template.html";
 
-
-marked.use(customHeadingId())
+marked.use(customHeadingId());
 // Configure marked to support KaTeX for math rendering
-marked.use(marked_katex({
-	throwOnError: false
-}))
-
+marked.use(
+    markedKatex({
+        throwOnError: false,
+    }),
+);
 
 // Read all Markdown files
-function get_posts() {
-	const files = fs.readdirSync(POSTS_DIR).filter(f => f.endsWith(".md"))
-	const posts = []
+function getPosts() {
+    const files = fs.readdirSync(POSTS_DIR).filter((f) => f.endsWith(".md"));
+    const posts = [];
 
-	files.forEach(file => {
-		const content = fs.readFileSync(path.join(POSTS_DIR, file), "utf-8")
-		const { data, content: markdown } = matter(content)
+    files.forEach((file) => {
+        const content = fs.readFileSync(path.join(POSTS_DIR, file), "utf-8");
+        const { data, content: markdown } = matter(content);
 
-		const slug = path.basename(file, ".md")
+        const slug = path.basename(file, ".md");
 
-		posts.push({
-			title: data.title,
-			date: new Date(data.date),
-			date_str: new Date(data.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
-			tags: data.tags || [],
-			excerpt: data.excerpt,
-			image: `/assets/images/posts/${slug}.webp`,
-			slug,
-			content: marked.parse(markdown)
-		})
-	})
+        posts.push({
+            title: data.title,
+            date: new Date(data.date),
+            date_str: new Date(data.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+            }),
+            tags: data.tags || [],
+            excerpt: data.excerpt,
+            image: `/assets/images/posts/${slug}.webp`,
+            slug,
+            content: marked.parse(markdown),
+        });
+    });
 
-	posts.sort((a, b) => b.date - a.date)
+    posts.sort((a, b) => b.date - a.date);
 
-	return posts
+    return posts;
 }
 
-function generate_blog_item(post) {
-	const tag_icons = {
-		javascript: "fa-brands fa-js",
-		css: "fa-brands fa-css3-alt",
-		html: "fa-brands fa-html5",
-		react: "fa-brands fa-react",
-		node: "fa-brands fa-node"
-	}
+function generateBlogItem(post) {
+    const tagIcons = {
+        javascript: "fa-brands fa-js",
+        css: "fa-brands fa-css3-alt",
+        html: "fa-brands fa-html5",
+        react: "fa-brands fa-react",
+        node: "fa-brands fa-node",
+    };
 
-	const tags_HTML = post.tags.map(tag => {
-		const icon = tag_icons[tag.toLowerCase()] || "fa-solid fa-tag"
-		return `<span class="tag"><i class="${icon}" aria-hidden="true"></i>${tag}</span>`
-	}).join("\n\t\t\t\t\t\t\t")
+    const postLink = `posts/${post.slug}.html`;
 
-	return `
-			<article class="blog-item" data-tags="${post.tags.join(",")}">
+    const tagsHtml = post.tags
+        .map((tag) => {
+            const icon = tagIcons[tag.toLowerCase()] || "fa-solid fa-tag";
+            return `<span class="tag"><i class="${icon}" aria-hidden="true"></i>${tag}</span>`;
+        })
+        .join("\n\t\t\t\t\t\t\t");
+
+    return `
+			<article class="blog-item" data-tags="${post.tags.join(",")}" data-post-url="${postLink}" tabindex="0" role="link">
 				<div class="blog-image">
 					<img src="${post.image}" alt="${post.title} preview image" loading="lazy">
 				</div>
@@ -73,17 +81,17 @@ function generate_blog_item(post) {
 					<p class="excerpt">${post.excerpt}</p>
 					<div class="post-footer">
 						<div class="tech-tags">
-							${tags_HTML}
+							${tagsHtml}
 						</div>
-						<a href="posts/${post.slug}.html" class="read-more">Read more <i class="fa-solid fa-arrow-right"></i></a>
+						<a href="${postLink}" class="read-more">Read more <i class="fa-solid fa-arrow-right"></i></a>
 					</div>
 				</div>
-			</article>`
+			</article>`;
 }
 
 // Generate individual post page
-function generate_post_page(post) {
-	return `<!DOCTYPE html>
+function generatePostPage(post) {
+    return `<!doctype html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -147,26 +155,26 @@ function generate_post_page(post) {
 </html>`;
 }
 
-function build_blog() {
-	const posts = get_posts()
-	const template = fs.readFileSync(TEMPLATE_FILE, "utf-8")
+function buildBlog() {
+    const posts = getPosts();
+    const template = fs.readFileSync(TEMPLATE_FILE, "utf-8");
 
-	const blog_items = posts.map(generate_blog_item).join("\n")
-	const output = template.replace("<!-- BLOG_ITEMS -->", blog_items)
+    const blogItems = posts.map(generateBlogItem).join("\n");
+    const output = template.replace("<!-- BLOG_ITEMS -->", blogItems);
 
-	fs.writeFileSync(OUTPUT_FILE, output)
-	console.log(`Generated ${OUTPUT_FILE} with ${posts.length} posts`)
+    fs.writeFileSync(OUTPUT_FILE, output);
+    console.log(`Generated ${OUTPUT_FILE} with ${posts.length} posts`);
 
-	// Ensure the output directory exists
-	const html_dir = "./blog/posts/"
-	fs.mkdirSync(html_dir, { recursive: true })
+    // Ensure the output directory exists
+    const htmlDir = "./blog/posts/";
+    fs.mkdirSync(htmlDir, { recursive: true });
 
-	posts.forEach(post => {
-		const post_HTML = generate_post_page(post)
-		const post_path = `./blog/posts/${post.slug}.html`
-		fs.writeFileSync(post_path, post_HTML)
-		console.log(`Generated ${post_path}`)
-	})
+    posts.forEach((post) => {
+        const postHtml = generatePostPage(post);
+        const postPath = `./blog/posts/${post.slug}.html`;
+        fs.writeFileSync(postPath, postHtml);
+        console.log(`Generated ${postPath}`);
+    });
 }
 
-build_blog()
+buildBlog();

@@ -3,9 +3,9 @@ date: "2025-06-11"
 title: "Tmux"
 excerpt: "Overview of tmux, the terminal multiplexer that enables panes, windows, and sessions for efficient terminal workflows."
 tags:
-  - tmux
-  - terminal
-  - productivity
+    - tmux
+    - terminal
+    - productivity
 ---
 
 # Tmux
@@ -54,19 +54,19 @@ All shortcuts assume the default prefix `CTRL + b` (modifiable in configuration)
 
 - `$`: rename the current session.
 
-	> `tmux rename-session`.
+    > `tmux rename-session`.
 
 - `(` / `)`: switch to previous / next session.
 
 - `c` (create): create a new window.
 
-	> `tmux new-window`.
+    > `tmux new-window`.
 
 - `n` / `p`: move to next / previous window.
 
 - `,`: rename the current window.
 
-	> `tmux rename-window <new name>`.
+    > `tmux rename-window <new name>`.
 
 - `<number>`: switch directly to window by number (starting at 0).
 
@@ -82,7 +82,7 @@ All shortcuts assume the default prefix `CTRL + b` (modifiable in configuration)
 
 - `z`: toggle zoom for the active pane.
 
-	> The same to unzoom.
+    > The same to unzoom.
 
 - `!`: promote a pane to its own window.
 

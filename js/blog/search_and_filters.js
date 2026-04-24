@@ -4,124 +4,222 @@
  * Dispatches custom events to notify pagination when content changes.
  */
 document.addEventListener("DOMContentLoaded", () => {
-	// DOM elements
-	const search_input = document.getElementById("blog-search-input")
-	const search_btn = document.getElementById("blog-search-btn")
-	const search_results = document.getElementById("search-results")
-	const blog_items = document.querySelectorAll(".blog-item")
+    // DOM elements
+    const searchInput = document.getElementById("blog-search-input");
+    const searchBtn = document.getElementById("blog-search-btn");
+    const searchResults = document.getElementById("search-results");
+    const blogItems = document.querySelectorAll(".blog-item");
+    const INTERACTIVE_SELECTOR = "a, button, input, textarea, select, label";
 
-	// State variables
-	let current_term = ""
-	let current_results = Array.from(blog_items)
+    // State variables
+    let currentTerm = "";
+    let currentResults = Array.from(blogItems);
 
-	const tag_buttons = document.querySelectorAll(".blog-filters .tech-tags .tag")
-	const active_tags = new Set()
+    const tagButtons = document.querySelectorAll(".blog-filters .tech-tags .tag");
+    const activeTags = new Set();
 
-	/**
-	 * Dispatches a custom event to notify pagination that content has been updated.
-	 */
-	const notify_pagination_update = () => {
-		document.dispatchEvent(new CustomEvent("blogContentUpdated"))
-	}
+    /**
+     * Dispatches a custom event to notify pagination that content has been updated.
+     */
+    const notifyPaginationUpdate = () => {
+        document.dispatchEvent(new CustomEvent("blogContentUpdated"));
+    };
 
-	/**
-	 * Checks if a blog post matches the search term.
-	 * @param {HTMLElement} post - The blog post element to check.
-	 * @param {string} term - The search term to match against.
-	 * @returns {boolean} True if the post title or excerpt contains the search term.
-	 */
-	const does_pots_match_search = (post, term) => {
-		const title = post.querySelector("h2").textContent.toLocaleLowerCase()
-		const excerpt = post.querySelector(".excerpt").textContent.toLocaleLowerCase()
+    /**
+     * Ensures blog cards are keyboard-focusable and have a navigable URL.
+     * Supports both generated cards with data-post-url and older markup.
+     */
+    const initializeClickableCards = () => {
+        document.querySelectorAll(".blog-item").forEach((post) => {
+            const fallbackPostUrl = post.querySelector(".read-more")?.getAttribute("href");
 
-		return title.includes(term) || excerpt.includes(term)
-	}
+            if (!post.dataset.postUrl && fallbackPostUrl) {
+                post.dataset.postUrl = fallbackPostUrl;
+            }
 
-	/**
-	 * Filters current results based on active tag selections.
-	 * Only shows posts that have ALL active tags.
-	 */
-	const filter_by_tags = () => {
-		current_results = current_results.filter(post => {
-			const post_tags = post.dataset.tags?.split(",").map(tag => tag.trim().toLowerCase()) || []
-			const matches_tags = active_tags.size === 0 ? true : !post_tags.some(t => !active_tags.has(t))
+            if (!post.hasAttribute("tabindex")) {
+                post.setAttribute("tabindex", "0");
+            }
 
-			return matches_tags
-		})
-	}
+            if (!post.hasAttribute("role")) {
+                post.setAttribute("role", "link");
+            }
+        });
+    };
 
-	/**
-	 * Performs a search based on the input value.
-	 * Filters posts by search term and active tags, then displays results.
-	 */
-	const perform_search = () => {
-		current_term = search_input.value.toLowerCase().trim()
+    /**
+     * Opens a post URL in the current tab or in a new tab.
+     * @param {string} postUrl - Relative post URL to navigate to.
+     * @param {boolean} openInNewTab - Whether to open in a new tab.
+     */
+    const openPost = (postUrl, openInNewTab = false) => {
+        if (!postUrl) {
+            return;
+        }
 
-		// If search is empty, clear results and show all posts
-		if (current_term === "") {
-			search_results.innerHTML = ""
-			document.querySelector(".blog-list").style.display = "block"
-			return
-		}
+        if (openInNewTab) {
+            window.open(postUrl, "_blank", "noopener");
+            return;
+        }
 
-		// Filter posts by search term
-		current_results = Array.from(blog_items).filter(post => does_pots_match_search(post, current_term))
+        window.location.href = postUrl;
+    };
 
-		filter_by_tags()
-		display_search_results()
-	}
+    /**
+     * Handles click navigation for clickable blog cards.
+     * Ignores clicks originating from interactive children like links and buttons.
+     * @param {MouseEvent} e - Click event.
+     */
+    const handlePostCardClick = (e) => {
+        const target = e.target instanceof Element ? e.target : null;
+        if (!target) {
+            return;
+        }
 
-	/**
-	 * Displays search results in the search results container.
-	 */
-	const display_search_results = () => {
-		const results_length = current_results.length
-		document.querySelector(".blog-list").style.display = "none"
+        const post = target.closest(".blog-item[data-post-url]");
+        if (!post) {
+            return;
+        }
 
-		if (results_length === 0) {
-			const active_tags_string = Array.from(active_tags).join(", ")
-			console.log(active_tags_string)
-			search_results.innerHTML = `<p> No results found for "${current_term}" ${active_tags_string ? " and" + active_tags_string : ""} tags</p>`
-			return
-		}
+        if (target.closest(INTERACTIVE_SELECTOR)) {
+            return;
+        }
 
-		search_results.innerHTML = `<p> Found ${results_length} results for "${current_term}" </p>`
+        openPost(post.dataset.postUrl, e.metaKey || e.ctrlKey);
+    };
 
-		const results_list = document.createElement("div")
-		results_list.className = "search-results-list"
+    /**
+     * Handles keyboard navigation on focused blog cards.
+     * @param {KeyboardEvent} e - Keydown event.
+     */
+    const handlePostCardKeydown = (e) => {
+        if (e.key !== "Enter" && e.key !== " ") {
+            return;
+        }
 
-		current_results.forEach(post => {
-			results_list.appendChild(post.cloneNode(true))
-		})
+        const target = e.target instanceof Element ? e.target : null;
+        if (!target) {
+            return;
+        }
 
-		console.log(results_list.innerHTML)
+        const post = target.closest(".blog-item[data-post-url]");
+        if (!post) {
+            return;
+        }
 
-		search_results.appendChild(results_list)
+        if (target.closest(INTERACTIVE_SELECTOR)) {
+            return;
+        }
 
-		notify_pagination_update()
-	}
+        e.preventDefault();
+        openPost(post.dataset.postUrl);
+    };
 
-	// Event listeners
-	search_btn.addEventListener("click", perform_search)
-	search_input.addEventListener("keyup", e => {
-		if (e.key === "Enter")
-			perform_search()
-	})
+    /**
+     * Checks if a blog post matches the search term.
+     * @param {HTMLElement} post - The blog post element to check.
+     * @param {string} term - The search term to match against.
+     * @returns {boolean} True if the post title or excerpt contains the search term.
+     */
+    const doesPostMatchSearch = (post, term) => {
+        const title = post.querySelector("h2").textContent.toLocaleLowerCase();
+        const excerpt = post.querySelector(".excerpt").textContent.toLocaleLowerCase();
 
-	// Tag filter buttons - toggle active state and update visibility
-	tag_buttons.forEach(btn => {
-		btn.addEventListener("click", () => {
-			const tag = btn.dataset.tag
+        return title.includes(term) || excerpt.includes(term);
+    };
 
-			if (active_tags.has(tag)) {
-				active_tags.delete(tag)
-				btn.classList.remove("active")
-			} else {
-				active_tags.add(tag)
-				btn.classList.add("active")
-			}
+    /**
+     * Filters current results based on active tag selections.
+     * Only shows posts that have ALL active tags.
+     */
+    const filterByTags = () => {
+        currentResults = currentResults.filter((post) => {
+            const postTags =
+                post.dataset.tags?.split(",").map((tag) => tag.trim().toLowerCase()) || [];
+            const matchesTags =
+                activeTags.size === 0 ? true : !postTags.some((tag) => !activeTags.has(tag));
 
-			display_search_results()
-		})
-	})
-})
+            return matchesTags;
+        });
+    };
+
+    /**
+     * Performs a search based on the input value.
+     * Filters posts by search term and active tags, then displays results.
+     */
+    const performSearch = () => {
+        currentTerm = searchInput.value.toLowerCase().trim();
+
+        // If search is empty, clear results and show all posts
+        if (currentTerm === "") {
+            searchResults.innerHTML = "";
+            document.querySelector(".blog-list").style.display = "block";
+            return;
+        }
+
+        // Filter posts by search term
+        currentResults = Array.from(blogItems).filter((post) =>
+            doesPostMatchSearch(post, currentTerm),
+        );
+
+        filterByTags();
+        displaySearchResults();
+    };
+
+    /**
+     * Displays search results in the search results container.
+     */
+    const displaySearchResults = () => {
+        const resultsLength = currentResults.length;
+        document.querySelector(".blog-list").style.display = "none";
+
+        if (resultsLength === 0) {
+            const activeTagsString = Array.from(activeTags).join(", ");
+            searchResults.innerHTML = `<p> No results found for "${currentTerm}"${activeTagsString ? ` and ${activeTagsString} tags` : ""}</p>`;
+            return;
+        }
+
+        searchResults.innerHTML = `<p> Found ${resultsLength} results for "${currentTerm}" </p>`;
+
+        const resultsList = document.createElement("div");
+        resultsList.className = "search-results-list";
+
+        currentResults.forEach((post) => {
+            resultsList.appendChild(post.cloneNode(true));
+        });
+
+        searchResults.appendChild(resultsList);
+
+        notifyPaginationUpdate();
+    };
+
+    // Event listeners
+    initializeClickableCards();
+
+    searchBtn.addEventListener("click", performSearch);
+    searchInput.addEventListener("keyup", (e) => {
+        if (e.key === "Enter") {
+            performSearch();
+        }
+    });
+
+    document.addEventListener("click", handlePostCardClick);
+    document.addEventListener("keydown", handlePostCardKeydown);
+
+    // Tag filter buttons - toggle active state and update visibility
+    tagButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const tag = btn.dataset.tag;
+
+            if (activeTags.has(tag)) {
+                activeTags.delete(tag);
+                btn.classList.remove("active");
+            } else {
+                activeTags.add(tag);
+                btn.classList.add("active");
+            }
+
+            displaySearchResults();
+        });
+    });
+});

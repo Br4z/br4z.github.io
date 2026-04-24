@@ -3,14 +3,14 @@ date: "2025-08-31"
 title: "The pacman command"
 excerpt: "A concise guide to using the `pacman` package manager on Arch Linux: refreshing databases, searching packages, managing installed software and keeping the system tidy without summoning dependency chaos"
 tags:
-  - linux
-  - arch-linux
-  - pacman
-  - package-manager
+    - linux
+    - arch-linux
+    - pacman
+    - package-manager
 sources:
-  - author: Learn Linux TV
-    url: https://www.youtube.com/watch?v=HD7jJEh4ZaM
-    language: English
+    - author: Learn Linux TV
+      url: https://www.youtube.com/watch?v=HD7jJEh4ZaM
+      language: English
 ---
 
 # The pacman command
@@ -300,6 +300,5 @@ The most commonly used `pacman` operations include:
 - `pacman -Qdt`: list orphan packages.
 
 - `pacman -Sc`: clean the package cache.
-
 
 Used carefully, `pacman` is fast, predictable and refreshingly honest. When it complains, it is usually doing so for a reason.

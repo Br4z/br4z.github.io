@@ -3,13 +3,13 @@ date: "2026-01-07"
 title: "Hyprland setup"
 excerpt: "A practical, step-by-step guide to install Arch Linux from a blank drive to a clean, bootable system."
 tags:
-  - linux
-  - arch-linux
+    - linux
+    - arch-linux
 ---
 
 # Hyprland setup
 
-This guide builds upon the foundation established in my ["Arch Linux installation"](https:///blog/posts/Arch_Linux_installation.html) post. Assuming you have completed those steps, you should now have a clean base system. Below, we will cover the essential packages required to transform that minimal base into a fully functional Hyprland desktop environment.
+This guide builds upon the foundation established in my ["Arch Linux installation"](https://braz9lkdi.github.io/blog/posts/Arch_Linux_installation.html) post. Assuming you have completed those steps, you should now have a clean base system. Below, we will cover the essential packages required to transform that minimal base into a fully functional Hyprland desktop environment.
 
 > Disclaimer: software packages update frequently, which may alter the configuration process. I aim to maintain the accuracy of this guide, similar to my previous Arch Linux post.
 
@@ -27,7 +27,7 @@ To ensure visual consistency across the entire system, I utilize centralized "co
 
 - Scripts: `~/.scripts/colors_and_helpers`.
 
-	> Note: the scripts file is only necessary if you plan to write custom scripts and want them to inherit your system's color palette.
+    > Note: the scripts file is only necessary if you plan to write custom scripts and want them to inherit your system's color palette.
 
 You can find the specific color codes I use by checking these files in my [**dotfiles**](https://github.com/Br4z/gray_files) which are based in the [Apprentice theme](https://github.com/Br4z/gray_files/blob/main/colorscheme/colorschemes.md).
 
@@ -45,7 +45,7 @@ A screen lock manager is a security utility that prevents unauthorized access to
 
 - Configuration file: [`~/.config/hypr/hyprlock.conf`](https://github.com/Br4z/gray_files/blob/main/hyprland/hyprlock.conf).
 
-	> Note: if you plan to use my configuration, ensure you update the monitor and path variables to match your system.
+    > Note: if you plan to use my configuration, ensure you update the monitor and path variables to match your system.
 
 ### Idle manager
 
@@ -59,26 +59,26 @@ An idle manager is a background daemon that monitors input activity. Its primary
 
 - Configuration file: `~/.config/hypr/hypridle.conf`.
 
-	```
-	general {
-		lock_cmd = pidof hyprlock || hyprlock
-		before_sleep_cmd = loginctl lock-session   # Lock before suspend.
-		after_sleep_cmd = hyprctl dispatch dpms on
-	}
+    ```ini
+    general {
+        lock_cmd = pidof hyprlock || hyprlock
+        before_sleep_cmd = loginctl lock-session   # Lock before suspend.
+        after_sleep_cmd = hyprctl dispatch dpms on
+    }
 
-	listener {
-		timeout = 300                          # 5 min
-		on-timeout = hyprctl dispatch dpms off # Screen off
-		on-resume = hyprctl dispatch dpms on   # Screen on
-	}
+    listener {
+        timeout = 300                          # 5 min
+        on-timeout = hyprctl dispatch dpms off # Screen off
+        on-resume = hyprctl dispatch dpms on   # Screen on
+    }
 
-	listener {
-		timeout = 900                  # 15 min
-		on-timeout = systemctl suspend # Suspend pc
-	}
-	```
+    listener {
+        timeout = 900                  # 15 min
+        on-timeout = systemctl suspend # Suspend pc
+    }
+    ```
 
-	If you are a laptop user, you might want to add brightness settings to these rules to dim the screen before turning it off completely.
+    If you are a laptop user, you might want to add brightness settings to these rules to dim the screen before turning it off completely.
 
 ## Desktop environment
 
@@ -94,7 +94,7 @@ The status bar is the central information hub of your desktop. It displays essen
 
 - Configuration file: [`~/.config/waybar/config.jsonc`](https://github.com/Br4z/gray_files/blob/main/waybar/config.jsonc) for functionality and [`~/.config/waybar/style.css`](https://github.com/Br4z/gray_files/blob/main/waybar/style.css) for appearance.
 
-	You will need to change `"hwmon-path"` in the `"temperature"` module to correctly display your CPU temperature.
+    You will need to change `"hwmon-path"` in the `"temperature"` module to correctly display your CPU temperature.
 
 ### Application launcher
 
@@ -106,7 +106,7 @@ An application launcher serves as your digital menu. It provides a quick and sea
 
 - Configuration file: `~/.config/hypr/hyprlauncher.conf`.
 
-	> Personally, I use the default configuration. However, if you want to customize the colors, you will need to modify the global [`hyprtoolkit`](https://wiki.hypr.land/Hypr-Ecosystem/hyprtoolkit/) theme configuration at `~/.config/hypr/hyprtoolkit.conf`.
+    > Personally, I use the default configuration. However, if you want to customize the colors, you will need to modify the global [`hyprtoolkit`](https://wiki.hypr.land/Hypr-Ecosystem/hyprtoolkit/) theme configuration at `~/.config/hypr/hyprtoolkit.conf`.
 
 ### Notification manager
 
@@ -120,66 +120,64 @@ The notification manager handles system and application alerts. It displays pop-
 
 - Configuration file: `~/.config/mako/config`.
 
-	```
-	sort=-time
-	layer=overlay
-	background-color=#1C1C1C
-	width=300
-	height=110
-	border-size=2
-	border-color=#BCBCBC
-	border-radius=5
-	icons=0
-	max-icon-size=64
-	default-timeout=5000
-	ignore-timeout=1
-	font=CaskaydiaMono Nerd Font Mono 14
+    ```ini
+    sort=-time
+    layer=overlay
+    background-color=#1C1C1C
+    width=300
+    height=110
+    border-size=2
+    border-color=#BCBCBC
+    border-radius=5
+    icons=0
+    max-icon-size=64
+    default-timeout=5000
+    ignore-timeout=1
+    font=CaskaydiaMono Nerd Font Mono 14
 
-	[urgency=low]
-	border-color=#5F875F
+    [urgency=low]
+    border-color=#5F875F
 
-	[urgency=normal]
-	border-color=#6C6C6C
+    [urgency=normal]
+    border-color=#6C6C6C
 
-	[urgency=high]
-	border-color=#AF5F5F
-	default-timeout=0
+    [urgency=high]
+    border-color=#AF5F5F
+    default-timeout=0
 
-	[category=mpd]
-	default-timeout=2000
-	group-by=category
-	```
+    [category=mpd]
+    default-timeout=2000
+    group-by=category
+    ```
 
 ## Screenshot
 
 - Packages:
+    - `grim`: grab images from a Wayland compositor (the actual screenshot tool).
 
-	- `grim`: grab images from a Wayland compositor (the actual screenshot tool).
+    - `slurp`: select a region in a Wayland compositor (provides the geometry for grim).
 
-	- `slurp`: select a region in a Wayland compositor (provides the geometry for grim).
+    - `swappy`: a Wayland-native snapshot editing tool (for drawing arrows, blurring text, etc.).
+        - Configuration file: `~/.config/swappy/config`.
 
-	- `swappy`: a Wayland-native snapshot editing tool (for drawing arrows, blurring text, etc.).
+            ```ini
+            [Default]
+            save_dir=$HOME/pictures/screenshots
+            save_filename_format=swappy-%Y%m%d-%H%M%S.png
+            show_panel=true
+            line_size=5
+            text_size=20
+            text_font=CaskaydiaMono Nerd Font
+            paint_mode=brush
+            early_exit=false
+            fill_shape=false
+            ```
 
-		- Configuration file: `~/.config/swappy/config`.
-
-			```
-			[Default]
-			save_dir=$HOME/pictures/screenshots
-			save_filename_format=swappy-%Y%m%d-%H%M%S.png
-			show_panel=true
-			line_size=5
-			text_size=20
-			text_font=CaskaydiaMono Nerd Font
-			paint_mode=brush
-			early_exit=false
-			fill_shape=false
-			```
-
-			> Make sure `save_dir` exists.
+            > Make sure `save_dir` exists.
 
 I use the following keybindings in my hyprland.conf to chain these tools together:
 
-```
+```ini
 # Capture region -> edit -> save/copy
 bind = $mainMod SHIFT, S, exec, grim -g "$(slurp)" - | swappy -f -
 
@@ -200,15 +198,15 @@ bind = $mainMod, Print, exec, grim -g "$(slurp)" - | wl-copy && notify-send "Scr
 
 - Configuration file: `~/.config/hypr/hyprpaper.conf`.
 
-	```
-	wallpaper {
-		monitor = DP-3
-		path = /mnt/files/pictures/wallpapers/Cailee_Spaeny.jpg
-		fit_mode = cover
-	}
-	```
+    ```ini
+    wallpaper {
+        monitor = DP-3
+        path = /mnt/files/pictures/wallpapers/Cailee_Spaeny.jpg
+        fit_mode = cover
+    }
+    ```
 
-	You will need to change the monitor name (`monitor`) and the path to your image file (`path`).
+    You will need to change the monitor name (`monitor`) and the path to your image file (`path`).
 
 ## Theming and appearance
 
@@ -256,13 +254,13 @@ The terminal emulator is the command-line interface for your desktop environment
 
 - Example configuration file: you can generate it with the shortcut `CTRL + SHIFT + F2` while inside the application.
 
-	> Since the default configuration file is heavily commented, it effectively serves as its own documentation.
+    > Since the default configuration file is heavily commented, it effectively serves as its own documentation.
 
 - Configuration file: [`~/.config/kitty/kitty.conf`](https://github.com/Br4z/gray_files/blob/main/kitty/kitty.conf).
 
 ### Text editor
 
--  package: `mousepad`.
+- package: `mousepad`.
 
 If you want to back up your settings (which are stored in the `dconf` database), you can export them with this command:
 
@@ -286,24 +284,22 @@ dconf load /org/xfce/mousepad/ < mousepad-backup.conf
 
 - Configuration file: [`~/.config/zathura/zathurarc`](https://github.com/Br4z/gray_files/tree/main/zathura/zathurarc).
 
-	> My configuration file only applies visual theming; all keybindings remain at their default settings.
+    > My configuration file only applies visual theming; all keybindings remain at their default settings.
 
 ### File explorer
 
 - Packages:
+    - `thunar`: main package.
 
-	- `thunar`: main package.
+    - `thunar-volman`: manages automatic mounting of removable devices.
 
-	- `thunar-volman`: manages automatic mounting of removable devices.
+    - `gvfs`: provides virtual filesystem support (trash bin, network shares, mounting).
 
-	- `gvfs`: provides virtual filesystem support (trash bin, network shares, mounting).
+    - `tumbler`: generates image thumbnails.
 
-	- `tumbler`: generates image thumbnails.
+    - `ffmpegthumbnailer`: generates video thumbnails.
 
-	- `ffmpegthumbnailer`: generates video thumbnails.
-
-	- `thunar-archive-plugin`: allows you to create and extract archives (requires `Xarchiver`).
-
+    - `thunar-archive-plugin`: allows you to create and extract archives (requires `Xarchiver`).
 
 If you want to back up your settings or theme adjustments, you can find the configuration files in `~/.config/xfce4/xfconf/xfce-perchannel-xml/`.
 

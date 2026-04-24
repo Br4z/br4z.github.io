@@ -3,9 +3,9 @@ date: "2026-04-21"
 title: "How to run C# projects in Visual Studio Code"
 excerpt: "How to open, build and run many C# projects in VS Code using the .NET SDK and C# Dev Kit, with practical expectations for larger solutions."
 tags:
-  - csharp
-  - dotnet
-  - vscode
+    - csharp
+    - dotnet
+    - vscode
 ---
 
 # how to run C# projects in Visual Studio Code
@@ -16,7 +16,7 @@ The basic setup is small:
 
 1. Install the [.NET SDK](https://dotnet.microsoft.com/en-us/download).
 
-	> In Arch Linux, the package is `dotnet-sdk`.
+    > In Arch Linux, the package is `dotnet-sdk`.
 
 2. Install the ["C# Dev Kit" VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit).
 

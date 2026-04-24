@@ -3,9 +3,9 @@ date: "2025-12-25"
 title: "Arch Linux installation"
 excerpt: "A practical, step-by-step guide to install Arch Linux from a blank drive to a clean, bootable system."
 tags:
-  - linux
-  - arch-linux
-  - installation
+    - linux
+    - arch-linux
+    - installation
 ---
 
 # Arch Linux installation
@@ -32,17 +32,17 @@ If Fast Startup is enabled, Windows does not fully release its hold on your hard
 
 #### How to disable it
 
-1.  Boot into Windows.
+1. Boot into Windows.
 
-2.  Open **Control Panel** > **Hardware and Sound** > **Power Options**.
+2. Open **Control Panel** > **Hardware and Sound** > **Power Options**.
 
-3.  Click on **"Choose what the power buttons do"**.
+3. Click on **"Choose what the power buttons do"**.
 
-4.  Click the shield icon that says **"Change settings that are currently unavailable"** (requires Admin rights).
+4. Click the shield icon that says **"Change settings that are currently unavailable"** (requires Admin rights).
 
-5.  Under "Shutdown settings", **uncheck** the box **"Turn on fast startup (recommended)"**.
+5. Under "Shutdown settings", **uncheck** the box **"Turn on fast startup (recommended)"**.
 
-6.  Click **Save changes** and fully restart your computer
+6. Click **Save changes** and fully restart your computer
 
 ### Real time clock alignment for dual boot systems
 
@@ -56,7 +56,7 @@ Configuring OpenSSH in the live environment permits the entire installation to b
 
 1. `systemctl status sshd`.
 
-	> If the process is not running, run it with `systemctl start sshd`.
+    > If the process is not running, run it with `systemctl start sshd`.
 
 2. `passwd`: set the root's password.
 
@@ -94,13 +94,13 @@ Presence of entries in `/sys/firmware/efi/efivars/` confirms a UEFI boot.
 
 3. Scan and enumerate networks.
 
-	```
-	station <device> scan
-	station <device> get-networks
-	station <device> connect "<SSID>"
-	```
+    ```text
+    station <device> scan
+    station <device> get-networks
+    station <device> connect "<SSID>"
+    ```
 
-	> Alternatively, using `iwctl`: `iwctl --passphrase <passphrase> station <device> connect <SSID>`
+    > Alternatively, using `iwctl`: `iwctl --passphrase <passphrase> station <device> connect <SSID>`
 
 A wired connection simplifies installation.
 
@@ -108,11 +108,11 @@ A wired connection simplifies installation.
 
 ### Target layout
 
-| partition |    suggested size    |   filesystem    | purpose                                                |
-|:---------:|:--------------------:|:---------------:|:------------------------------------------------------ |
-|  `/efi`   |       500 MiB        |      FAT32      | holds bootloaders and NVRAM entries for UEFI firmware. |
-|  `root`   | $\geq 40 \text{GiB}$ |      ext4       | operating system files.                                |
-|  `/home`  |   remaining space    | ext4 (optional) | user data.                                             |
+| partition | suggested size | filesystem | purpose |
+| :-: | :-: | :-: | :-- |
+| `/efi` | 500 MiB | FAT32 | holds bootloaders and NVRAM entries for UEFI firmware. |
+| `root` | $\geq 40 \text{GiB}$ | ext4 | operating system files. |
+| `/home` | remaining space | ext4 (optional) | user data. |
 
 ### Creating partitions with `fdisk`
 
@@ -124,32 +124,32 @@ A wired connection simplifies installation.
 
 4. Create the `EFI`.
 
-	```
-	n       # New partition
-	1       # Partition number
-	<ENTER> # Accept default first sector
-	+500M
-	t 1     # Change type
-	```
+    ```text
+    n       # New partition
+    1       # Partition number
+    <ENTER> # Accept default first sector
+    +500M
+    t 1     # Change type
+    ```
 
 5. Create the `/`.
 
-	```
-	n
-	2
-	     # Accept default first sector
-	+50G # Size
-	```
+    ```text
+    n
+    2
+         # Accept default first sector
+    +50G # Size
+    ```
 
 6. Create `/home`.
 
-	```
-	n
-	3
-	  # Accept defaults to use remaining space
-	```
+    ```text
+    n
+    3
+      # Accept defaults to use remaining space
+    ```
 
-	> No special type change is required; the default Linux filesystem code is correct.
+    > No special type change is required; the default Linux filesystem code is correct.
 
 7. `w`: write changes and quit.
 
@@ -199,7 +199,7 @@ When a separate NTFS disk is used for general data storage, it can be incorporat
 
 The following entry illustrates a typical NTFS partition configuration in `/etc/fstab`:
 
-```
+```text
 UUID=64A6257CA625503A /home/braz/files ntfs-3g auto,exec,users,uid=1000,gid=1000,noatime 0 2
 ```
 
@@ -207,11 +207,11 @@ UUID=64A6257CA625503A /home/braz/files ntfs-3g auto,exec,users,uid=1000,gid=1000
 
 1. `pacstrap -i /mnt base base-devel linux linux-headers linux-firmware git sudo networkmanager`.
 
-	Another kernel can be installed instead (like the Zen one) or even have more than one. This is useful if one breaks (which rarely happens). The packages for the Zen kernel are `linux-zen` and `linux-zen-headers`.
+    Another kernel can be installed instead (like the Zen one) or even have more than one. This is useful if one breaks (which rarely happens). The packages for the Zen kernel are `linux-zen` and `linux-zen-headers`.
 
-	> Depending on the configuration you have chosen (Linux, Zen, or both kernels), the settings in the "boot manager" section for systemd-boot may change.
+    > Depending on the configuration you have chosen (Linux, Zen, or both kernels), the settings in the "boot manager" section for systemd-boot may change.
 
-	> Also install `network-manager-applet` if you are going to use WiFi.
+    > Also install `network-manager-applet` if you are going to use WiFi.
 
 2. `arch-chroot /mnt`.
 
@@ -235,13 +235,13 @@ UUID=64A6257CA625503A /home/braz/files ntfs-3g auto,exec,users,uid=1000,gid=1000
 
 2. `useradd -m -g users -G wheel <username>`.
 
-	> In certain administrative scenarios, an account may be created without assignment to any supplementary groups (`useradd -m <username>`); however, separate configuration within `/etc/sudoers.d` is required to grant the necessary privileges.
+    > In certain administrative scenarios, an account may be created without assignment to any supplementary groups (`useradd -m <username>`); however, separate configuration within `/etc/sudoers.d` is required to grant the necessary privileges.
 
 3. `passwd <username>`.
 
 4. `EDITOR=nvim visudo` and uncomment "%wheel ALL=(ALL) ALL".
 
-	> When only the user account has been created, the required privileges must be granted by adding `<username> ALL=(ALL) ALL` to `sudoers.d`.
+    > When only the user account has been created, the required privileges must be granted by adding `<username> ALL=(ALL) ALL` to `sudoers.d`.
 
 ## Boot manager
 
@@ -249,11 +249,11 @@ UUID=64A6257CA625503A /home/braz/files ntfs-3g auto,exec,users,uid=1000,gid=1000
 
 1. `pacman -S grub efibootmgr`.
 
-	> When the installation is performed alongside Windows, the package `os-prober` is installed as well.
+    > When the installation is performed alongside Windows, the package `os-prober` is installed as well.
 
 2. Open the file `/etc/default/grub`, uncomment the line with "GRUB_DISABLE_OS_PROBER" and set it to "false".
 
-	> If the installation is **not** performed alongside Windows, this step may be omitted.
+    > If the installation is **not** performed alongside Windows, this step may be omitted.
 
 3. `grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck`.
 
@@ -269,40 +269,40 @@ After completing these steps, exit the chroot environment with `exit`, unmount a
 
 2. Configure the loader.
 
-	Edit `/boot/loader/loader.conf` and replace its content with:
+    Edit `/boot/loader/loader.conf` and replace its content with:
 
-	```
-	default  arch.conf
-	timeout  3
-	console-mode max
-	editor   no
-	```
+    ```ini
+    default  arch.conf
+    timeout  3
+    console-mode max
+    editor   no
+    ```
 
 3. `blkid -s PARTUUID -o value <root partition>`: finding the correct PARTUUID.
 
-	> This is important for the next step.
+    > This is important for the next step.
 
 4. Create Arch Linux entry.
 
-	Create `/boot/loader/entries/arch.conf`.
+    Create `/boot/loader/entries/arch.conf`.
 
-	> Important: determine if the system runs on an Intel or AMD processor to load the correct microcode.
+    > Important: determine if the system runs on an Intel or AMD processor to load the correct microcode.
 
-	```
-	title   Arch Linux
-	# Uncomment the line matching your kernel:
-	# linux   /vmlinuz-linux
-	# linux   /vmlinuz-linux-zen
-	# Uncomment the line matching your processor:
-	# initrd  /intel-ucode.img
-	# initrd  /amd-ucode.img
-	# Uncomment the line matching your kernel:
-	# initrd  /initramfs-linux.img
-	# initrd  /initramfs-linux-zen.img
-	options root=PARTUUID=YOUR_ROOT_PARTUUID rw
-	```
+    ```ini
+    title   Arch Linux
+    # Uncomment the line matching your kernel:
+    # linux   /vmlinuz-linux
+    # linux   /vmlinuz-linux-zen
+    # Uncomment the line matching your processor:
+    # initrd  /intel-ucode.img
+    # initrd  /amd-ucode.img
+    # Uncomment the line matching your kernel:
+    # initrd  /initramfs-linux.img
+    # initrd  /initramfs-linux-zen.img
+    options root=PARTUUID=YOUR_ROOT_PARTUUID rw
+    ```
 
-	> Replace `YOUR_ROOT_PARTUUID` with the actual alphanumerical string from `blkid`.
+    > Replace `YOUR_ROOT_PARTUUID` with the actual alphanumerical string from `blkid`.
 
 ## Minimal post installation
 
@@ -310,7 +310,7 @@ After completing these steps, exit the chroot environment with `exit`, unmount a
 
 1. `timedatectl list-timezones`: list available time-zone identifiers.
 
-	> A specific entry may be located with grep, for example: `timedatectl list-timezones | grep Bogota`.
+    > A specific entry may be located with grep, for example: `timedatectl list-timezones | grep Bogota`.
 
 2. `timedatectl set-timezone <time zone>`: the desired time zone is applied (e.g., `America/Bogota`).
 
@@ -329,28 +329,26 @@ For the GPU drivers use `pacman -S nvidia nvidia-utils nvidia-settings` for Nvid
 ### Audio stack
 
 1. `pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber`.
+    - `pipewire`: the core PipeWire daemon (audio/video routing engine that replaces PulseAudio/JACK in modern Linux setups).
 
-	- `pipewire`: the core PipeWire daemon (audio/video routing engine that replaces PulseAudio/JACK in modern Linux setups).
+    - `pipewire-alsa`: ALSA compatibility layer so apps that output via ALSA can route audio through PipeWire.
 
-	- `pipewire-alsa`: ALSA compatibility layer so apps that output via ALSA can route audio through PipeWire.
+    - `pipewire-pulse`: PulseAudio compatibility server so PulseAudio apps (most desktop apps) work transparently with PipeWire.
 
-	- `pipewire-pulse`: PulseAudio compatibility server so PulseAudio apps (most desktop apps) work transparently with PipeWire.
+    - `pipewire-jack`: JACK compatibility layer so pro-audio/JACK apps can work with PipeWire without a separate JACK server.
 
-	- `pipewire-jack`: JACK compatibility layer so pro-audio/JACK apps can work with PipeWire without a separate JACK server.
-
-	- `wireplumber`: the PipeWire session/policy manager (handles automatic device routing, default devices, Bluetooth profile switching, etc.).
+    - `wireplumber`: the PipeWire session/policy manager (handles automatic device routing, default devices, Bluetooth profile switching, etc.).
 
 2. `systemctl --user enable --now pipewire pipewire-pulse wireplumber`.
 
 ### Bluetooth
 
 1. `pacman -S bluez bluez-utils blueman`.
+    - `bluez`: the Linux Bluetooth protocol stack (the core system component for Bluetooth).
 
-	- `bluez`: the Linux Bluetooth protocol stack (the core system component for Bluetooth).
+    - `bluez-utils`: user-space tools like `bluetoothctl` and utilities needed to manage devices/pairing.
 
-	- `bluez-utils`: user-space tools like `bluetoothctl` and utilities needed to manage devices/pairing.
-
-	- `blueman`: a GTK Bluetooth manager (tray app + GUI) that makes pairing and switching devices easier.
+    - `blueman`: a GTK Bluetooth manager (tray app + GUI) that makes pairing and switching devices easier.
 
 2. `systemctl enable bluetooth.service`.
 
@@ -382,19 +380,19 @@ We use `gnome-keyring` to act as this vault and integrate it with the login proc
 
 2. Configure PAM to unlock the keyring on login. Since we are using `ly`, edit `/etc/pam.d/ly`::
 
-	```
-	#%PAM-1.0
-	.
-	.
-	.
-	# Add this line AFTER "auth include system-login"
-	auth    optional pam_gnome_keyring.so
-	.
-	.
-	.
-	# Add this line at the END of the session section
-	session optional pam_gnome_keyring.so auto_start
-	```
+    ```text
+    #%PAM-1.0
+    .
+    .
+    .
+    # Add this line AFTER "auth include system-login"
+    auth    optional pam_gnome_keyring.so
+    .
+    .
+    .
+    # Add this line at the END of the session section
+    session optional pam_gnome_keyring.so auto_start
+    ```
 
 3. Finally, ensure the daemon starts with your window manager: `gnome-keyring-daemon --start --components=secrets`.
 
@@ -402,6 +400,6 @@ A minimal Arch installation has now been completed. The subsequent task involves
 
 ### Bonus (a few `pacman` tweaks)
 
-A short `pacman` configuration section is also available in my [WSL Arch installation guide](https:///blog/posts/how_to_install_Arch_Linux_in_WSL.html#configure-pacman-conf), covering small quality-of-life improvements such as `ILoveCandy`, `VerbosePkgLists` and `ParallelDownloads`.
+A short `pacman` configuration section is also available in my [WSL Arch installation guide](https://braz9lkdi.github.io/blog/posts/how_to_install_Arch_Linux_in_WSL.html#configure-pacman-conf), covering small quality-of-life improvements such as `ILoveCandy`, `VerbosePkgLists` and `ParallelDownloads`.
 
 It may be a useful reference for readers who want a slightly nicer package management experience, or for those introducing Arch Linux to someone who is still not ready to commit to the full installation ritual.
