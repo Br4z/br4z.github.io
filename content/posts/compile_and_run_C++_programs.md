@@ -92,4 +92,4 @@ find . -name "*.cpp" -type f -print0 | xargs -0 g++ -o main && ./main && rm ./ma
 
 ## Bonus
 
-A PowerShell function to automate this can be found in this [Gist](https://gist.github.com/Br4z/59497813c21fc6df36d1d40b5635860b).
+A PowerShell function to automate this can be found in this [repository](https://github.com/braz9LKDI/gray_files/blob/main/PowerShell/utilities.ps1).

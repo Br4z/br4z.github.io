@@ -66,24 +66,21 @@ function generateBlogItem(post) {
             const icon = tagIcons[tag.toLowerCase()] || "fa-solid fa-tag";
             return `<span class="tag"><i class="${icon}" aria-hidden="true"></i>${tag}</span>`;
         })
-        .join("\n\t\t\t\t\t\t\t");
+        .join("\n\t\t\t\t\t\t");
 
     return `
-			<article class="blog-item" data-tags="${post.tags.join(",")}" data-post-url="${postLink}" tabindex="0" role="link">
+			<article class="blog-item" data-tags="${post.tags.join(",")}">
 				<div class="blog-image">
 					<img src="${post.image}" alt="${post.title} preview image" loading="lazy">
 				</div>
 				<div class="blog-content">
-					<h2>${post.title}</h2>
+					<h2><a href="${postLink}" class="card-link">${post.title}</a></h2>
 					<div class="blog-meta">
 						<span class="date">${post.date_str}</span>
 					</div>
 					<p class="excerpt">${post.excerpt}</p>
-					<div class="post-footer">
-						<div class="tech-tags">
-							${tagsHtml}
-						</div>
-						<a href="${postLink}" class="read-more">Read more <i class="fa-solid fa-arrow-right"></i></a>
+					<div class="tech-tags">
+						${tagsHtml}
 					</div>
 				</div>
 			</article>`;
@@ -94,63 +91,63 @@ function generatePostPage(post) {
     return `<!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="${post.excerpt}">
-	<title>${post.title} - Brandon's Blog</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="${post.excerpt}">
+    <title>${post.title} - Brandon's Blog</title>
 
-	<link rel="stylesheet" href="/assets/fonts/fontawesome/all.min.css" />
-	<link rel="stylesheet" href="/css/style.css" />
-	<link rel="stylesheet" href="/css/blog.css" />
-	<link rel="stylesheet" href="/css/post.css" />
+    <link rel="stylesheet" href="/assets/fonts/fontawesome/all.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/blog.css" />
+    <link rel="stylesheet" href="/css/post.css" />
 
-	<link rel="icon" href="/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: light)">
-	<link rel="icon" href="/favicon-light.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="/favicon-light.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
 
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 </head>
 <body>
-	<header>
-		<nav>
-			<div class="left">
-				<a href="/">Brandon</a>
-			</div>
-			<div class="right">
-				<a href="/">
-					<i class="fa-solid fa-house"></i>
-					<span>home</span>
-				</a>
-				<a href="/blog/" class="active">
-					<i class="fa-solid fa-pen"></i>
-					<span>blog</span>
-				</a>
-				<a href="/#contact">
-					<i class="fa-solid fa-envelope"></i>
-					<span>contact</span>
-				</a>
-			</div>
-		</nav>
-	</header>
-	<main>
-		<article class="post">
-			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
-			<header class="post-header">
-				<div class="post-meta">
-					<span class="date">${post.date_str}</span>
-				</div>
-			</header>
-			<div class="post-content">
-				${post.content}
-			</div>
-			<a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
-		</article>
-	</main>
-	<footer>
-		<p>Created by Brandon</p>
-	</footer>
+    <header>
+        <nav>
+            <div class="left">
+                <a href="/">Brandon</a>
+            </div>
+            <div class="right">
+                <a href="/">
+                    <i class="fa-solid fa-house"></i>
+                    <span>home</span>
+                </a>
+                <a href="/blog/" class="active">
+                    <i class="fa-solid fa-pen"></i>
+                    <span>blog</span>
+                </a>
+                <a href="/#contact">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>contact</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <article class="post">
+            <a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="date">${post.date_str}</span>
+                </div>
+            </header>
+            <div class="post-content">
+                ${post.content}
+            </div>
+            <a href="/blog/" class="back-link"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Return to all posts</a>
+        </article>
+    </main>
+    <footer>
+        <p>Created by Brandon</p>
+    </footer>
 </body>
 </html>`;
 }

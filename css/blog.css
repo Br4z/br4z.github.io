@@ -77,12 +77,27 @@
     margin-bottom: 30px;
     padding-bottom: 15px;
     border-bottom: 1px solid var(--blue);
-    cursor: pointer;
+    position: relative;
 }
 
-.blog-item:focus-visible {
+.blog-item:has(.card-link:focus-visible) {
     outline: 2px solid var(--red);
     outline-offset: 6px;
+}
+
+.card-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.card-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+}
+
+.blog-item:hover .card-link {
+    color: var(--red);
 }
 
 .blog-image {
@@ -133,13 +148,6 @@
 
 .tech-tags {
     margin-bottom: 0;
-}
-
-.post-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
 }
 
 .blog-pagination {
@@ -207,22 +215,6 @@
     color: var(--light-white);
 }
 
-.read-more {
-    align-self: flex-end;
-    white-space: nowrap;
-    color: var(--blue);
-    font-weight: 600;
-    transition: 0.5s;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.read-more:hover {
-    color: var(--red);
-    transform: translateX(3px);
-}
-
 /* ------------------------------- RESPONSIVE ------------------------------- */
 
 @media (width <= 740px) {
@@ -234,16 +226,6 @@
         flex: 0 0 auto;
         margin-right: 0;
         margin-bottom: 15px;
-    }
-
-    .read-more {
-        align-self: flex-start;
-        margin-top: 10px;
-    }
-
-    .post-footer {
-        flex-direction: column;
-        align-items: flex-start;
     }
 }
 

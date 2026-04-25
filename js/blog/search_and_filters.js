@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchBtn = document.getElementById("blog-search-btn");
     const searchResults = document.getElementById("search-results");
     const blogItems = document.querySelectorAll(".blog-item");
-    const INTERACTIVE_SELECTOR = "a, button, input, textarea, select, label";
 
     // State variables
     let currentTerm = "";
@@ -23,96 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
      */
     const notifyPaginationUpdate = () => {
         document.dispatchEvent(new CustomEvent("blogContentUpdated"));
-    };
-
-    /**
-     * Ensures blog cards are keyboard-focusable and have a navigable URL.
-     * Supports both generated cards with data-post-url and older markup.
-     */
-    const initializeClickableCards = () => {
-        document.querySelectorAll(".blog-item").forEach((post) => {
-            const fallbackPostUrl = post.querySelector(".read-more")?.getAttribute("href");
-
-            if (!post.dataset.postUrl && fallbackPostUrl) {
-                post.dataset.postUrl = fallbackPostUrl;
-            }
-
-            if (!post.hasAttribute("tabindex")) {
-                post.setAttribute("tabindex", "0");
-            }
-
-            if (!post.hasAttribute("role")) {
-                post.setAttribute("role", "link");
-            }
-        });
-    };
-
-    /**
-     * Opens a post URL in the current tab or in a new tab.
-     * @param {string} postUrl - Relative post URL to navigate to.
-     * @param {boolean} openInNewTab - Whether to open in a new tab.
-     */
-    const openPost = (postUrl, openInNewTab = false) => {
-        if (!postUrl) {
-            return;
-        }
-
-        if (openInNewTab) {
-            window.open(postUrl, "_blank", "noopener");
-            return;
-        }
-
-        window.location.href = postUrl;
-    };
-
-    /**
-     * Handles click navigation for clickable blog cards.
-     * Ignores clicks originating from interactive children like links and buttons.
-     * @param {MouseEvent} e - Click event.
-     */
-    const handlePostCardClick = (e) => {
-        const target = e.target instanceof Element ? e.target : null;
-        if (!target) {
-            return;
-        }
-
-        const post = target.closest(".blog-item[data-post-url]");
-        if (!post) {
-            return;
-        }
-
-        if (target.closest(INTERACTIVE_SELECTOR)) {
-            return;
-        }
-
-        openPost(post.dataset.postUrl, e.metaKey || e.ctrlKey);
-    };
-
-    /**
-     * Handles keyboard navigation on focused blog cards.
-     * @param {KeyboardEvent} e - Keydown event.
-     */
-    const handlePostCardKeydown = (e) => {
-        if (e.key !== "Enter" && e.key !== " ") {
-            return;
-        }
-
-        const target = e.target instanceof Element ? e.target : null;
-        if (!target) {
-            return;
-        }
-
-        const post = target.closest(".blog-item[data-post-url]");
-        if (!post) {
-            return;
-        }
-
-        if (target.closest(INTERACTIVE_SELECTOR)) {
-            return;
-        }
-
-        e.preventDefault();
-        openPost(post.dataset.postUrl);
     };
 
     /**
@@ -194,17 +103,12 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Event listeners
-    initializeClickableCards();
-
     searchBtn.addEventListener("click", performSearch);
     searchInput.addEventListener("keyup", (e) => {
         if (e.key === "Enter") {
             performSearch();
         }
     });
-
-    document.addEventListener("click", handlePostCardClick);
-    document.addEventListener("keydown", handlePostCardKeydown);
 
     // Tag filter buttons - toggle active state and update visibility
     tagButtons.forEach((btn) => {
